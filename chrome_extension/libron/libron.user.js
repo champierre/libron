@@ -100,8 +100,13 @@ libron.calilIcon = 'data:image/png;base64,'+
     '0hwrwWxWI4T0NkTtrsxgVmWkjmQFPhnXCiSnSSArcBs9+RKb6362X0GqoBlJa2c4gxrP/KUF5ZN0'+
     'sbQmwWgemjK7SuzOgLfqxKJ3huRqnqzzBwE6Xrqxh9tpAAAAAElFTkSuQmCC';
 
-// カーリル(https://calil.jp)APIキー
-libron.appkey = "YOUR API KEY";
+// カーリルAPIキー
+//
+// このキーは動作確認用にお使いください。
+// もしこのプロジェクトをForkして動作させる場合には、
+// カーリルAPIの利用規約(https://calil.jp/doc/api_license.html)を確認した上で、
+// http://calil.jp/api/dashboard/ より自分のAPIキーを申請し、それを使うようにしてください。
+libron.appkey = "7b38a6543c2d4423c00114f53f114655";
 
 libron.libraries = {};
 libron.libraryNames = {};
