@@ -6,7 +6,7 @@
 // @include       https://www.amazon.*
 // @include       http://www.amazon.*
 // @license       MIT License(http://en.wikipedia.org/wiki/MIT_License)
-// @version       3.0.11
+// @version       3.0.12
 // @updateURL     https://userscripts.org/scripts/source/73877.meta.js
 // @downloadURL   https://userscripts.org/scripts/source/73877.user.js
 // @grant         GM_setValue
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 var libron = libron ? libron : new Object();
-libron.version = "3.0.11";
+libron.version = "3.0.12";
 
 // http://ja.wikipedia.org/wiki/都道府県 の並び順
 libron.prefectures = ["北海道",
