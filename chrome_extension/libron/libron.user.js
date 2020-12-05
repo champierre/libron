@@ -480,7 +480,6 @@ function updateLibrarySelectBox(selectBoxDiv, prefecture, univ) {
   if (libron.libraryNames[prefecture]) {
     selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
   } else {
-    var url = "https://api.calil.jp/library?appkey=" + encodeURIComponent(libron.appkey) + "&pref=" + encodeURIComponent(prefecture) + "&format=json";
     chrome.runtime.sendMessage({
       contentScriptQuery: "queryLibraries",
       appkey: libron.appkey,
@@ -573,22 +572,20 @@ function addLibraryLinksToBookList(){
   }
 
   if (isbns.length > 0) {
-    var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + isbns.join(',') + "&systemid=" + encodeURIComponent(libron.selectedSystemId) + "&format=json";
-    addLoadingIcon(url, target_objects, isbns);
+    addLoadingIcon(target_objects, isbns);
   }
 }
 
 function addLibraryLinksToBookPage(isbn){
   var btAsinTitleDiv = parent.document.getElementById('btAsinTitle');
-  var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + encodeURIComponent(isbn) + "&systemid=" + encodeURIComponent(libron.selectedSystemId) + "&format=json";
   if (btAsinTitleDiv) {
     var div = btAsinTitleDiv.parentNode;
-    addLoadingIcon(url, [div], [isbn]);
+    addLoadingIcon([div], [isbn]);
   } else {
     var booksTitleDiv = document.getElementById('productTitle');
     if (booksTitleDiv) {
       var div = booksTitleDiv.parentNode;
-      addLoadingIcon(url, [div], [isbn]);
+      addLoadingIcon([div], [isbn]);
     }
   }
 }
@@ -610,8 +607,7 @@ function addLibraryLinksToWishList(){
   }
 
   if (isbns.length > 0) {
-    var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + isbns.join(',') + "&systemid=" + encodeURIComponent(libron.selectedSystemId) + "&format=json";
-    addLoadingIcon(url, target_objects, isbns);
+    addLoadingIcon(target_objects, isbns);
   }
 }
 
@@ -619,12 +615,11 @@ function addLibraryLinksToMobileBookPage(isbn){
   var hrs = parent.document.getElementsByTagName('hr');
   if (hrs.length > 0) {
   　var hr = hrs[0];
-  　var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + encodeURIComponent(isbn) + "&systemid=" + libron.selectedSystemId + "&format=json";
-    addLoadingIcon(url, [hr], [isbn]);
+    addLoadingIcon([hr], [isbn]);
   }
 }
 
-function addLoadingIcon(url, objects, isbns) {
+function addLoadingIcon(objects, isbns) {
   var session = null;
 
   // callback function
