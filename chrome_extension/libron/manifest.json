@@ -3,7 +3,7 @@
   "name": "Libron",
   "short_name": "Libron",
   "icons": { "48": "icon48.png", "128": "icon128.png" },
-  "version": "3.0.12",
+  "version": "3.0.13",
   "description": "Amazon のページから最寄りの図書館の蔵書を検索",
   "permissions": [
     "http://*/*",
