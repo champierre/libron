@@ -6,7 +6,7 @@
 // @include       https://www.amazon.*
 // @include       http://www.amazon.*
 // @license       MIT License(http://en.wikipedia.org/wiki/MIT_License)
-// @version       3.0.13
+// @version       3.0.14
 // @updateURL     https://userscripts.org/scripts/source/73877.meta.js
 // @downloadURL   https://userscripts.org/scripts/source/73877.user.js
 // @grant         GM_setValue
@@ -14,7 +14,7 @@
 // ==/UserScript==
 
 var libron = libron ? libron : new Object();
-libron.version = "3.0.13";
+libron.version = "3.0.14";
 
 // http://ja.wikipedia.org/wiki/都道府県 の並び順
 libron.prefectures = ["北海道",
@@ -425,6 +425,7 @@ function createLibraryNames(prefecture, libraries, cities) {
       for (var j in cities[kana]){
         city_name = cities[kana][j];
         if (smallMediumLibrariesObject[prefecture + city_name]) {
+          smallMediumLibrariesObject[prefecture + city_name][0]["kana"] = kana;
           smallMediumLibraries = smallMediumLibraries.concat(smallMediumLibrariesObject[prefecture + city_name]);
         }
       }
@@ -478,7 +479,7 @@ function createLibraryNames(prefecture, libraries, cities) {
 function updateLibrarySelectBox(selectBoxDiv, prefecture, univ) {
   if (!univ) univ = false;
   if (libron.libraryNames[prefecture]) {
-    selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+    selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
   } else {
     chrome.runtime.sendMessage({
       contentScriptQuery: "queryLibraries",
@@ -491,19 +492,19 @@ function updateLibrarySelectBox(selectBoxDiv, prefecture, univ) {
         var parsedCities = JSON.parse(cities);
         libron.libraries[prefecture] = JSON.parse(libraries);
         libron.libraryNames[prefecture] = createLibraryNames(prefecture, libron.libraries, parsedCities[prefecture]);
-        selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+        selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
       });
     });
   }
 }
 
-function createLibrarySelectBox(libraryNames, univ) {
+function createLibrarySelectBox(prefecture, libraryNames, univ) {
   var select = document.createElement("select");
   var groups;
   if (univ) {
-    groups = ['図書館(地域)', '図書館(広域)', '図書館(大学)', '移動・その他'];
+    groups = ['図書館(地域)', 'あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', '図書館(広域)', '図書館(大学)', '移動・その他'];
   } else {
-    groups = ['図書館(地域)', '図書館(広域)', '移動・その他'];
+    groups = ['図書館(地域)', 'あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', '図書館(広域)', '移動・その他'];
   }
 
   var optGroups = {};
@@ -515,18 +516,23 @@ function createLibrarySelectBox(libraryNames, univ) {
   for (var i in libraryNames) {
     var option = document.createElement('option');
     option.value = libraryNames[i]['systemid'];
-    option.textContent = libraryNames[i]['systemname'];
+    var regExp = new RegExp("^" + prefecture);
+    option.textContent = libraryNames[i]['systemname'].replace(regExp, '');
 
     if (libraryNames[i]['systemid'] == libron.selectedSystemId) {
       option.selected = true;
     }
 
     if (optGroups[libraryNames[i]['group']]) {
-      optGroups[libraryNames[i]['group']].appendChild(option);
+      if (libraryNames[i]['group'] === '図書館(地域)') {
+        optGroups[libraryNames[i]['kana']].appendChild(option);
+      } else {
+        optGroups[libraryNames[i]['group']].appendChild(option);
+      }
     }
   }
   for (var i in groups) {
-    if (optGroups[groups[i]].childNodes.length > 0) {
+    if (optGroups[groups[i]].childNodes.length > 0 || groups[i] == '図書館(地域)') {
       select.appendChild(optGroups[groups[i]]);
     }
   }
@@ -768,7 +774,7 @@ function getResponse(theMessageEvent) {
 
     var selectBoxDiv = document.getElementById("libron_select_box");
     if (selectBoxDiv) {
-      selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+      selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
     }
   } else if (theMessageEvent.name === "checkLibraryResponse") {
     var responseText = (theMessageEvent.message)[0];
