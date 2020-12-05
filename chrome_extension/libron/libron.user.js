@@ -308,13 +308,11 @@ function addSelectBox() {
 
   var univCheckBoxLabel = libron.createElement("label", {for: "univ", class: "libron_gray"}, "大学図書館も表示");
 
-  // GM_xmlhttpRequest({
-  //   method: "GET",
-  //   url: "https://s3-ap-northeast-1.amazonaws.com/libron.net/news.txt",
-  //   onload: function(response) {
-  //     newsSpan.innerHTML = response.responseText;
-  //   }
-  // });
+  chrome.runtime.sendMessage({
+    contentScriptQuery: "queryNews",
+  }, function(news) {
+    newsSpan.innerHTML = news;
+  });
 
   univCheckBox.addEventListener("change", function(){
     selectBoxDiv.replaceChild(loadingMessage, selectBoxDiv.childNodes[3]);

@@ -60,6 +60,15 @@ function init() {
             console.error(error);
           })
         return true;  // Will respond asynchronously.
+      } else if (request.contentScriptQuery == "queryNews") {
+        var url = "https://s3-ap-northeast-1.amazonaws.com/libron.net/news.txt";
+        fetch(url)
+          .then(response => response.text())
+          .then(text => sendResponse(text))
+          .catch(error => {
+            console.error(error);
+          })
+        return true;
       }
     });
 }
