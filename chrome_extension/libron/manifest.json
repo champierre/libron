@@ -6,8 +6,10 @@
   "version": "3.0.13",
   "description": "Amazon のページから最寄りの図書館の蔵書を検索",
   "permissions": [
-    "http://*/*",
-    "https://*/*"
+    "https://s3-ap-northeast-1.amazonaws.com/libron.net/news.txt"
+    "https://api.calil.jp/library",
+    "https://api.calil.jp/check",
+    "https://calil.jp/city_list"
   ],
   "background": {
     "scripts":["background.js"]
