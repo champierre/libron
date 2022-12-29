@@ -32,7 +32,7 @@ Chromeのメニューで、[ウィンドウ] > [拡張機能]を選びます。�
 
 ## バグをみつけたら
 
-http://www.libron.net/top/contact よりお問い合わせください。あるいは[Pull Request](https://github.com/champierre/libron/pulls)を送ってください。
+https://libron.net/top/contact よりお問い合わせください。あるいは[Pull Request](https://github.com/champierre/libron/pulls)を送ってください。
 
 ## 独自の機能を追加したくなったら
 
