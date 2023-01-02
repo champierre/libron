@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./settings.css" />
+  </head>
+  <body>
+    <div>
+      <img src="images/logo.png" />
+      <span id="title"> ver.3.0.16</span>
+    </div>
+
+    <div id="news" class="gray"></div>
+
+    <div id="info">
+      <span class="gray"></span> <a id="update_link" href="#">変更</a>
+    </div>
+
+    <div id="select_box">
+      <div id="selects">
+        <input type="checkbox" id="univ_checkbox"><label for="univ_checkbox" class="gray">大学図書館も表示</label>
+        <select id="prefecture_select"></select>
+        <select id="library_select"></select>
+      </div>
+      <div id="buttons">
+        <button id="save">保存</button>
+        <a id="cancel_link" href="#">キャンセル</a>
+      </div>
+    </div>
+
+    <script src="./settings.js" type="module"></script>
+  </body>
+</html>

@@ -1,5 +1,21 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.contentScriptQuery == "queryLibraries") {
+  if (request.contentScriptQuery === 'setValue') {
+    chrome.storage.local.set({[request.key]: request.value})
+      .then(() => {
+        sendResponse(true);
+      }).catch(error => {
+        console.error(error);
+      })
+    return true;
+  } else if (request.contentScriptQuery === 'getValue') {
+    chrome.storage.local.get([request.key])
+      .then(response => {
+        sendResponse(response[request.key]);
+      }).catch(error => {
+        console.error(error);
+      })
+    return true;
+  } else if (request.contentScriptQuery == "queryLibraries") {
     var url = "https://api.calil.jp/library?appkey=" + encodeURIComponent(request.appkey) + "&pref=" + encodeURIComponent(request.prefecture) + "&format=json";
     fetch(url)
       .then(response => response.text())

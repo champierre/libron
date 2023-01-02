@@ -1,0 +1,26 @@
+body {
+  width: 36rem;
+  background:#e8e4db;
+  font-size:14px;
+}
+
+img {
+  vertical-align:-4px;
+}
+
+span#title {
+  font-weight:bold;
+  color:#e47911;
+}
+
+.gray {
+  color:#666666;
+}
+
+#news, #info, #buttons, #selects {
+  margin-top:10px;
+}
+
+div#select_box {
+  display:none;
+}

@@ -1,5 +1,5 @@
 var libron = libron ? libron : new Object();
-libron.version = "3.0.15";
+libron.version = "3.0.16";
 
 // http://ja.wikipedia.org/wiki/都道府県 の並び順
 libron.prefectures = ["北海道",
@@ -42,10 +42,20 @@ main();
 
 function main() {
   console.log("*** Libron ver." + libron.version + " ***");
-  libron.selectedSystemId = GM_getValue("selectedSystemId") ? decodeURIComponent(GM_getValue("selectedSystemId")) : 'Tokyo_Pref';
-  libron.selectedSystemName = GM_getValue("selectedSystemName") ? decodeURIComponent(GM_getValue("selectedSystemName")) : '東京都立図書館';
-  libron.selectedPrefecture = GM_getValue("selectedPrefecture") ? decodeURIComponent(GM_getValue("selectedPrefecture")) : '東京都';
-  libron.univChecked = (GM_getValue("univChecked") === "true") ? true : false;
+
+  getValue("selectedSystemName", (value) => {
+    libron.selectedSystemName = value ? decodeURIComponent(value) : '東京都立図書館';
+    getValue("selectedSystemId", (value) => {
+      libron.selectedSystemId = value ? decodeURIComponent(value) : 'Tokyo_Pref';
+      getValue("selectedPrefecture", (value) => {
+        libron.selectedPrefecture = value ? decodeURIComponent(value) : '東京都';
+        getValue("univChecked", (value) => {
+          libron.univChecked = (value === "true");
+        });
+      });
+    });
+  });
+
   libron.systemNames = {};
 
   var href = document.location.href;
@@ -53,8 +63,6 @@ function main() {
   if (parent != self) {
     return;
   }
-
-  addSelectBox();
 
   if (isbnOfBookPage(href)) {
     addLibraryLinksToBookPage(isbnOfBookPage(href));
@@ -364,10 +372,10 @@ function createLibrarySelectBox(prefecture, libraryNames, univ) {
 }
 
 function saveSelection(options){
-  GM_setValue("selectedPrefecture", encodeURIComponent(options.prefecture));
-  GM_setValue("selectedSystemId", encodeURIComponent(options.systemid));
-  GM_setValue("selectedSystemName", encodeURIComponent(options.systemname));
-  GM_setValue("univChecked", options.univChecked === true ? "true" : "false");
+  setValue("selectedPrefecture", encodeURIComponent(options.prefecture));
+  setValue("selectedSystemId", encodeURIComponent(options.systemid));
+  setValue("selectedSystemName", encodeURIComponent(options.systemname));
+  setValue("univChecked", options.univChecked === true ? "true" : "false");
 }
 
 /*
@@ -454,33 +462,36 @@ function addLoadingIcon(objects, isbns) {
 
   // callback function
   var checkLibrary = function(session) {
-    chrome.runtime.sendMessage({
-      contentScriptQuery: "queryAvailabilityInLibrary",
-      appkey: libron.appkey,
-      isbns: isbns.join(','),
-      selectedSystemId: libron.selectedSystemId,
-      session: session
-    }, function(json) {
-      var parsedJson = JSON.parse(json);
-      var cont = parsedJson["continue"];
-      if (cont === 0) {
-        replaceWithLibraryLink(parsedJson);
-      } else {
-        //途中なので再度検索をおこなう
-        var session = parsedJson["session"];
-        if (session.length > 0) {
-          setTimeout(function(){
-            checkLibrary(session);
-          }, 2000);
+    getValue("selectedSystemId", (value) => {
+      libron.selectedSystemId = value ? decodeURIComponent(value) : 'Tokyo_Pref';
+      chrome.runtime.sendMessage({
+        contentScriptQuery: "queryAvailabilityInLibrary",
+        appkey: libron.appkey,
+        isbns: isbns.join(','),
+        selectedSystemId: libron.selectedSystemId,
+        session: session
+      }, function(json) {
+        var parsedJson = JSON.parse(json);
+        var cont = parsedJson["continue"];
+        if (cont === 0) {
+          replaceWithLibraryLink(parsedJson);
+        } else {
+          //途中なので再度検索をおこなう
+          var session = parsedJson["session"];
+          if (session.length > 0) {
+            setTimeout(function(){
+              checkLibrary(session);
+            }, 2000);
+          }
         }
-      }
+      });
     });
   };
 
   for (var i = 0; i < objects.length; i++) {
     var object = objects[i];
     var div = libron.createElement("div", {class: "libron_link_div", "data-isbn": isbns[i]}, null);
-    var searchingSpan = libron.createElement("span", {class: "libron_gray"}, "図書館を検索中 ");
+    var searchingSpan = libron.createElement("span", {class: "libron_gray"}, '図書館を検索中 ');
     var loadingIconImg = libron.createElement("img", {src: chrome.runtime.getURL("images/loading.gif")}, null);
     div.appendChild(searchingSpan);
     div.appendChild(loadingIconImg);
@@ -520,7 +531,7 @@ function replaceWithLibraryLink(json){
 
     if (status && status == "Error") {
       libLink = document.createElement("div");
-      var errorMsg = document.createTextNode("エラーが発生しました ");
+      var errorMsg = document.createTextNode(`${libron.selectedSystemName}で検索して、エラーが発生しました。`);
       libLink.appendChild(errorMsg);
       libLink.appendChild(ngEmoji);
       div.appendChild(libLink);
@@ -571,10 +582,19 @@ function replaceWithLibraryLink(json){
   }
 }
 
-function GM_setValue(key, value) {
-  localStorage.setItem(key, value);
+function setValue(key, value) {
+  chrome.runtime.sendMessage({
+    contentScriptQuery: "setValue",
+    key: key,
+    value: value
+  }, null);
 }
 
-function GM_getValue(key) {
-  return localStorage.getItem(key);
+function getValue(key, callback) {
+  chrome.runtime.sendMessage({
+    contentScriptQuery: "getValue",
+    key: key
+  }, (value) => {
+    callback(value);
+  });
 }
