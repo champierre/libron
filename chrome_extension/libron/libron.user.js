@@ -1,18 +1,3 @@
-// ==UserScript==
-// @name          Libron
-// @namespace     http://libron.net
-// @description   Amazon のページから最寄りの図書館の蔵書を検索
-// @author        Junya Ishihara(http://champierre.com)
-// @include       https://www.amazon.*
-// @include       http://www.amazon.*
-// @license       MIT License(http://en.wikipedia.org/wiki/MIT_License)
-// @version       3.0.15
-// @updateURL     https://userscripts.org/scripts/source/73877.meta.js
-// @downloadURL   https://userscripts.org/scripts/source/73877.user.js
-// @grant         GM_setValue
-// @grant         GM_getValue
-// ==/UserScript==
-
 var libron = libron ? libron : new Object();
 libron.version = "3.0.15";
 
