@@ -110,18 +110,19 @@ function isbnOfMobileBookPage(href) {
 
 function addSelectBox() {
   var div = libron.createElement("div", {id: "libron_select"}, null);
-  var titleDiv = libron.createElement("div", {class: "libron_left"});
-  var titleSpan = libron.createElement("span", {id: "title"}, " ver." + libron.version);
-  var logoImg = libron.createElement("img", {src: chrome.runtime.getURL('images/logo.png')}, null);
+  div.innerHTML = `
+    <div class="libron_left">
+      <img src="${chrome.runtime.getURL('images/logo.png')}" />
+      <span id="title"> ver.${libron.version}</span>
+      <span id="libron_news" class="libron_gray" />
+    </div>
+  `;
+
   var infoDiv = libron.createElement("div", {id: "libron_info", class: "libron_right"});
   var currentLibrary = libron.createElement("span", {class: "libron_gray"}, "[" + libron.selectedPrefecture + "]" + libron.selectedSystemName + "で検索 ");
   var showLink = libron.createElement("a", {href: "javascript:void(0);"}, "変更");
   var newsSpan = libron.createElement("span", {id: "libron_news", class: "libron_gray"}, "");
   showLink.addEventListener("click", showSelectBox, false);
-
-  titleDiv.appendChild(logoImg);
-  titleDiv.appendChild(titleSpan);
-  titleDiv.appendChild(newsSpan);
 
   infoDiv.appendChild(currentLibrary);
   infoDiv.appendChild(showLink);
@@ -132,13 +133,6 @@ function addSelectBox() {
   univCheckBox.checked = libron.univChecked;
 
   var univCheckBoxLabel = libron.createElement("label", {for: "univ", class: "libron_gray"}, "大学図書館も表示");
-
-  chrome.runtime.sendMessage({
-    contentScriptQuery: "queryNews",
-  }, function(news) {
-    newsSpan.innerHTML = news;
-  });
-
   univCheckBox.addEventListener("change", function(){
     selectBoxDiv.replaceChild(loadingMessage, selectBoxDiv.childNodes[3]);
     libron.univChecked = univCheckBox.checked;
@@ -180,7 +174,6 @@ function addSelectBox() {
 
   var clearDiv = libron.createElement("div", {class: "libron_clear"}, null);
 
-  div.appendChild(titleDiv);
   div.appendChild(infoDiv);
   div.appendChild(selectBoxDiv);
   div.appendChild(clearDiv);
@@ -197,6 +190,12 @@ function addSelectBox() {
     saveSelection(options);
     window.location.reload();
   }, false);
+
+  chrome.runtime.sendMessage({
+    contentScriptQuery: "queryNews",
+  }, function(news) {
+    document.querySelector('#libron_news').innerHTML = news;
+  });
 }
 
 /*
