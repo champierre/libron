@@ -1,24 +1,29 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Libron",
   "short_name": "Libron",
-  "icons": { "48": "icon48.png", "128": "icon128.png" },
-  "version": "3.0.14",
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "version": "3.0.15",
   "description": "Amazon のページから最寄りの図書館の蔵書を検索",
-  "permissions": [
-    "https://s3-ap-northeast-1.amazonaws.com/libron.net/news.txt",
+  "host_permissions": [
+    "https://libron.net/news.txt",
     "https://api.calil.jp/library",
     "https://api.calil.jp/check",
     "https://calil.jp/city_list"
   ],
   "background": {
-    "scripts":["background.js"]
+    "service_worker": "background.js"
   },
   "content_scripts": [{
     "matches": [
       "https://www.amazon.co.jp/*",
       "http://www.amazon.co.jp/*"
     ],
-    "js":["gmWrapper.js", "libron.user.js"]
+    "js":["libron.user.js"]
   }]
 }

@@ -6,15 +6,16 @@
 // @include       https://www.amazon.*
 // @include       http://www.amazon.*
 // @license       MIT License(http://en.wikipedia.org/wiki/MIT_License)
-// @version       3.0.15
+// @version       3.0.10
 // @updateURL     https://userscripts.org/scripts/source/73877.meta.js
 // @downloadURL   https://userscripts.org/scripts/source/73877.user.js
 // @grant         GM_setValue
 // @grant         GM_getValue
+// @grant         GM_xmlhttpRequest
 // ==/UserScript==
 
 var libron = libron ? libron : new Object();
-libron.version = "3.0.15";
+libron.version = "3.0.10";
 
 // http://ja.wikipedia.org/wiki/都道府県 の並び順
 libron.prefectures = ["北海道",
@@ -99,13 +100,8 @@ libron.calilIcon = 'data:image/png;base64,'+
     '0hwrwWxWI4T0NkTtrsxgVmWkjmQFPhnXCiSnSSArcBs9+RKb6362X0GqoBlJa2c4gxrP/KUF5ZN0'+
     'sbQmwWgemjK7SuzOgLfqxKJ3huRqnqzzBwE6Xrqxh9tpAAAAAElFTkSuQmCC';
 
-// カーリルAPIキー
-//
-// このキーは動作確認用にお使いください。
-// もしこのプロジェクトをForkして動作させる場合には、
-// カーリルAPIの利用規約(https://calil.jp/doc/api_license.html)を確認した上で、
-// http://calil.jp/api/dashboard/ より自分のAPIキーを申請し、それを使うようにしてください。
-libron.appkey = "7b38a6543c2d4423c00114f53f114655";
+// カーリル(https://calil.jp)APIキー
+libron.appkey = "73ec9cd9e4b62b65b9549dc173750e9c";
 
 libron.libraries = {};
 libron.libraryNames = {};
@@ -121,14 +117,23 @@ libron.createElement = function(tagName, attributes, content) {
   return dom;
 }
 
-main();
+if (isGreasemonkey()) {
+  main();
+} else {
+  function onReadyGM(){
+    main();
+  }
+}
 
 /*
  * メイン
  */
 
 function main() {
-  console.log("*** Libron ver." + libron.version + " ***");
+  if (isSafariExtension()) {
+    safari.self.addEventListener("message", getResponse, false);
+  }
+
   libron.selectedSystemId = GM_getValue("selectedSystemId") ? decodeURIComponent(GM_getValue("selectedSystemId")) : 'Tokyo_Pref';
   libron.selectedSystemName = GM_getValue("selectedSystemName") ? decodeURIComponent(GM_getValue("selectedSystemName")) : '東京都立図書館';
   libron.selectedPrefecture =　GM_getValue("selectedPrefecture")　? decodeURIComponent(GM_getValue("selectedPrefecture")) : '東京都';
@@ -302,11 +307,17 @@ function addSelectBox() {
 
   var univCheckBoxLabel = libron.createElement("label", {for: "univ", class: "libron_gray"}, "大学図書館も表示");
 
-  chrome.runtime.sendMessage({
-    contentScriptQuery: "queryNews",
-  }, function(news) {
-    newsSpan.innerHTML = news;
-  });
+  if (isSafariExtension()) {
+    safari.self.tab.dispatchMessage("getNews");
+  } else {
+    GM_xmlhttpRequest({
+      method: "GET",
+      url: "http://libron.net/news.txt",
+      onload: function(response) {
+        newsSpan.innerHTML = response.responseText;
+      }
+    });
+  }
 
   univCheckBox.addEventListener("change", function(){
     selectBoxDiv.replaceChild(loadingMessage, selectBoxDiv.childNodes[3]);
@@ -419,7 +430,6 @@ function createLibraryNames(prefecture, libraries, cities) {
       for (var j in cities[kana]){
         city_name = cities[kana][j];
         if (smallMediumLibrariesObject[prefecture + city_name]) {
-          smallMediumLibrariesObject[prefecture + city_name][0]["kana"] = kana;
           smallMediumLibraries = smallMediumLibraries.concat(smallMediumLibrariesObject[prefecture + city_name]);
         }
       }
@@ -473,32 +483,42 @@ function createLibraryNames(prefecture, libraries, cities) {
 function updateLibrarySelectBox(selectBoxDiv, prefecture, univ) {
   if (!univ) univ = false;
   if (libron.libraryNames[prefecture]) {
-    selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+    selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
   } else {
-    chrome.runtime.sendMessage({
-      contentScriptQuery: "queryLibraries",
-      appkey: libron.appkey,
-      prefecture: prefecture
-    }, function(libraries) {
-      chrome.runtime.sendMessage({
-        contentScriptQuery: "queryCities"
-      }, function(cities) {
-        var parsedCities = JSON.parse(cities);
-        libron.libraries[prefecture] = JSON.parse(libraries);
-        libron.libraryNames[prefecture] = createLibraryNames(prefecture, libron.libraries, parsedCities[prefecture]);
-        selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+    var url = "https://api.calil.jp/library?appkey=" + encodeURIComponent(libron.appkey) + "&pref=" + encodeURIComponent(prefecture) + "&format=json";
+
+    if (isSafariExtension()) {
+      safari.self.tab.dispatchMessage("retrieveLibraryInfo", [url, prefecture, univ]);
+    } else {
+      GM_xmlhttpRequest({
+        method: "GET",
+        url: url,
+        onload: function(response){
+          GM_xmlhttpRequest({
+            method: "GET",
+            url: "https://calil.jp/city_list",
+            onload: function(city_list_response) {
+              var city_list_match = city_list_response.responseText.match(/^loadcity\((.*)\);(\n)*$/);
+              var cities = JSON.parse(city_list_match[1]);
+              var match = response.responseText.match(/^callback\((.*)\);(\n)*$/);
+              libron.libraries[prefecture] = JSON.parse(match[1]);
+              libron.libraryNames[prefecture] = createLibraryNames(prefecture, libron.libraries, cities[prefecture]);
+              selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+            }
+          });
+        }
       });
-    });
+    }
   }
 }
 
-function createLibrarySelectBox(prefecture, libraryNames, univ) {
+function createLibrarySelectBox(libraryNames, univ) {
   var select = document.createElement("select");
   var groups;
   if (univ) {
-    groups = ['図書館(地域)', 'あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', '図書館(広域)', '図書館(大学)', '移動・その他'];
+    groups = ['図書館(地域)', '図書館(広域)', '図書館(大学)', '移動・その他'];
   } else {
-    groups = ['図書館(地域)', 'あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', '図書館(広域)', '移動・その他'];
+    groups = ['図書館(地域)', '図書館(広域)', '移動・その他'];
   }
 
   var optGroups = {};
@@ -510,23 +530,18 @@ function createLibrarySelectBox(prefecture, libraryNames, univ) {
   for (var i in libraryNames) {
     var option = document.createElement('option');
     option.value = libraryNames[i]['systemid'];
-    var regExp = new RegExp("^" + prefecture);
-    option.textContent = libraryNames[i]['systemname'].replace(regExp, '');
+    option.textContent = libraryNames[i]['systemname'];
 
     if (libraryNames[i]['systemid'] == libron.selectedSystemId) {
       option.selected = true;
     }
 
     if (optGroups[libraryNames[i]['group']]) {
-      if (libraryNames[i]['group'] === '図書館(地域)') {
-        optGroups[libraryNames[i]['kana']].appendChild(option);
-      } else {
-        optGroups[libraryNames[i]['group']].appendChild(option);
-      }
+      optGroups[libraryNames[i]['group']].appendChild(option);
     }
   }
   for (var i in groups) {
-    if (optGroups[groups[i]].childNodes.length > 0 || groups[i] == '図書館(地域)') {
+    if (optGroups[groups[i]].childNodes.length > 0) {
       select.appendChild(optGroups[groups[i]]);
     }
   }
@@ -572,20 +587,22 @@ function addLibraryLinksToBookList(){
   }
 
   if (isbns.length > 0) {
-    addLoadingIcon(target_objects, isbns);
+    var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + isbns.join(',') + "&systemid=" + encodeURIComponent(libron.selectedSystemId) + "&format=json";
+    addLoadingIcon(url, target_objects, isbns);
   }
 }
 
 function addLibraryLinksToBookPage(isbn){
   var btAsinTitleDiv = parent.document.getElementById('btAsinTitle');
+  var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + encodeURIComponent(isbn) + "&systemid=" + encodeURIComponent(libron.selectedSystemId) + "&format=json";
   if (btAsinTitleDiv) {
     var div = btAsinTitleDiv.parentNode;
-    addLoadingIcon([div], [isbn]);
+    addLoadingIcon(url, [div], [isbn]);
   } else {
     var booksTitleDiv = document.getElementById('productTitle');
     if (booksTitleDiv) {
       var div = booksTitleDiv.parentNode;
-      addLoadingIcon([div], [isbn]);
+      addLoadingIcon(url, [div], [isbn]);
     }
   }
 }
@@ -607,7 +624,8 @@ function addLibraryLinksToWishList(){
   }
 
   if (isbns.length > 0) {
-    addLoadingIcon(target_objects, isbns);
+    var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + isbns.join(',') + "&systemid=" + encodeURIComponent(libron.selectedSystemId) + "&format=json";
+    addLoadingIcon(url, target_objects, isbns);
   }
 }
 
@@ -615,33 +633,38 @@ function addLibraryLinksToMobileBookPage(isbn){
   var hrs = parent.document.getElementsByTagName('hr');
   if (hrs.length > 0) {
   　var hr = hrs[0];
-    addLoadingIcon([hr], [isbn]);
+  　var url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&isbn=" + encodeURIComponent(isbn) + "&systemid=" + libron.selectedSystemId + "&format=json";
+    addLoadingIcon(url, [hr], [isbn]);
   }
 }
 
-function addLoadingIcon(objects, isbns) {
-  var session = null;
+function addLoadingIcon(url, objects, isbns) {
 
   // callback function
-  var checkLibrary = function(session) {
-    chrome.runtime.sendMessage({
-      contentScriptQuery: "queryAvailabilityInLibrary",
-      appkey: libron.appkey,
-      isbns: isbns.join(','),
-      selectedSystemId: libron.selectedSystemId,
-      session: session
-    }, function(json) {
-      var parsedJson = JSON.parse(json);
-      var cont = parsedJson["continue"];
-      if (cont === 0) {
-        replaceWithLibraryLink(parsedJson);
-      } else {
-        //途中なので再度検索をおこなう
-        var session = parsedJson["session"];
-        if (session.length > 0) {
-          setTimeout(function(){
-            checkLibrary(session);
-          }, 2000);
+  var checkLibrary = isSafariExtension() ?
+  function(url){
+    safari.self.tab.dispatchMessage("checkLibrary", [url, libron.appkey]);
+  }
+  :
+  function(url) {
+    GM_xmlhttpRequest({
+      method: "GET",
+      url: url,
+      onload: function(response){
+        var match = response.responseText.match(/^callback\((.*)\);$/);
+        var json = JSON.parse(match[1]);
+        var cont = json["continue"];
+        if (cont == 0) {
+          replaceWithLibraryLink(json);
+        } else {
+          //途中なので再度検索をおこなう
+          var session = json["session"];
+          if (session.length > 0) {
+            var new_url = "https://api.calil.jp/check?appkey=" + encodeURIComponent(libron.appkey) + "&session=" + encodeURIComponent(session) + "&format=json";
+            setTimeout(function(){
+              checkLibrary(new_url);
+            }, 2000);
+          }
         }
       }
     });
@@ -656,7 +679,7 @@ function addLoadingIcon(objects, isbns) {
     div.appendChild(loadingIconImg);
     object.parentNode.insertBefore(div, object.nextSibling);
   }
-  checkLibrary(session);
+  checkLibrary(url);
 }
 
 function replaceWithLibraryLink(json){
@@ -742,10 +765,50 @@ function replaceWithLibraryLink(json){
   }
 }
 
+// *Safari Extension Specific*
 function GM_setValue(key, value) {
   localStorage.setItem(key, value);
 }
 
+// *Safari Extension Specific*
 function GM_getValue(key) {
   return localStorage.getItem(key);
+}
+
+// *Safari Extension Specific*
+function getResponse(theMessageEvent) {
+  if (theMessageEvent.name === "libraryInfoResponse") {
+    var responseText = (theMessageEvent.message)[0];
+    var cityListResponseText = (theMessageEvent.message)[1];
+    var prefecture = (theMessageEvent.message)[2];
+    var univ = (theMessageEvent.message)[3];
+    var city_list_match = cityListResponseText.match(/^loadcity\((.*)\);(\n)*$/);
+    var cities = JSON.parse(city_list_match[1]);
+    var match = responseText.match(/^callback\((.*)\);(\n)*$/);
+
+    libron.libraries[prefecture] = JSON.parse(match[1]);
+    libron.libraryNames[prefecture] = createLibraryNames(prefecture, libron.libraries, cities[prefecture]);
+
+    var selectBoxDiv = document.getElementById("libron_select_box");
+    if (selectBoxDiv) {
+      selectBoxDiv.replaceChild(createLibrarySelectBox(libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
+    }
+  } else if (theMessageEvent.name === "checkLibraryResponse") {
+    var responseText = (theMessageEvent.message)[0];
+    var match = responseText.match(/^callback\((.*)\);(\n)*$/);
+    var json = JSON.parse(match[1]);
+    replaceWithLibraryLink(json);
+  } else if (theMessageEvent.name === "getNewsResponse") {
+    var responseText = (theMessageEvent.message)[0];
+    var newsSpan = document.getElementById("libron_news");
+    newsSpan.innerHTML = responseText;
+  }
+}
+
+function isGreasemonkey() {
+  return (typeof isChromeExtension == "undefined");
+}
+
+function isSafariExtension() {
+  return (typeof safari == 'object') && (typeof safari.extension == 'object');
 }
