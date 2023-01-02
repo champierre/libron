@@ -26,5 +26,9 @@
     ],
     "js":["libron.js"],
     "css":["libron.css"]
+  }],
+  "web_accessible_resources": [{
+    "resources": ["images/*"],
+    "matches": ["<all_urls>"]
   }]
 }

@@ -12,49 +12,6 @@ libron.prefectures = ["北海道",
   "福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県",
   "沖縄県"];
 
-libron.logo = 'data:image/png;base64,'+
-    'iVBORw0KGgoAAAANSUhEUgAAAC0AAAAUCAMAAAAusUTNAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ'+
-    'bWFnZVJlYWR5ccllPAAAAYBQTFRFdHJu49/WjouGFBMTzcnB2tfObmxoWllWtbKraGZiwb637erj'+
-    'hIJ+ZWRgp6SeXl1ZDAwLl5SPHBwbj42JxcO9ubaxYF5bAgICcG5rraulYmFd1dHJRkVDQkA+ZGJf'+
-    'gX97pKKcJiYkkY6JLi4sXFtYNDMxLCsp6eXc6+jg6ebd6OTb7Onh7OjhKSgn7Oni6+ffRENAUlBN'+
-    '7uvk7eni6uffsa6n6OTc6ubdnpyVPDs5IyMh4NzT6+fgnJmTqaagVVNQ2NTMxcG6ysa/V1ZSmZaQ'+
-    'U1JPz8zET05L5ODY5eHY6OXcamhlbWtnSEdFx8S83dnR19TNfnx539zUfnt36ufh5+Td5uPciYeD'+
-    'dnVweHZxNzY1y8jBSkhGm5iTIB8enpuW0s/G7uvlpKGb3tvUk5GLlJKM5uLbOTg24N3W4d7XrKmi'+
-    'uLWu3drTMTAug4F8vLmzhYN/i4mDop+ZeXhze3l0JCQi5OHZ4t/Yw7+47urkOjo4Pz47hIJ96eXd'+
-    '6ube6OTb4C1nnAAAAIB0Uk5T////////////////////////////////////////////////////'+
-    '////////////////////////////////////////////////////////////////////////////'+
-    '/////////////////////////////////////////wA4BUtnAAAB30lEQVR42rST13PaQBDGBULG'+
-    'mEAE2DqIDQ6mnLqsQu8lbuCS3p3E6Z1Up93tv26JJC+Z8dh+yD7tffObvW/39hg4SzD/md45A/3Q'+
-    '1ACflq7WUcGQTl27wf9Q6O9DL32y79zSH3oYL55M1y6prpPFSAhW4okB+wq4q53bWmcXfP48y6ZL'+
-    'ANWCN4yh5tGrHt2PoHOkut+EwUyvhm5V+uhgbSmgKAsFNIzWEJqDgPlF9OjzoiQDpGO0fQ+6xVkK'+
-    '6zHo17lsSlFFh8uxXxt8McsB5HWPFpoefeEBLqV/1flQAwS/v7A2ixYdXAZoobuQfbFd8wEzrW1u'+
-    'eR0IMShp8+prPgIdc8B32yg17ayNXsJ++FBb3/xMPfq5z1ODEyi9xRgyY9lc4dgZjtcanp4cKcC+'+
-    'MXq8OXbpzTqKhz6Muz8jlRYfbEWXD8lqUn+Kvn1E2Wog8C54zdlFF0X5CRq5TnbuJ/zCzcd7k8SN'+
-    'xERYntfFjU+Xr1Mhe+V9JncnkworJDpJqQTnkzYjEzFsWWHFEHVVtK3vikNIU1fpxqiwp1iPLFus'+
-    'YKrqBibPFhRGxqRCKSWYSIRME3nLTbFkHGwzc6pBsewiroolhx6731gSbXv6EH9DLpeP/w1l9ybp'+
-    'n1U+EmAAVC9EkhaYTkMAAAAASUVORK5CYII=';
-
-libron.loadingIcon = 'data:image/gif;base64,'+
-    'R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh'+
-    '/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklr'+
-    'E2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAA'+
-    'EAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUk'+
-    'KhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9'+
-    'HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYum'+
-    'CYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzII'+
-    'unInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAA'+
-    'ACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJ'+
-    'ibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFG'+
-    'xTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdce'+
-    'CAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==';
-
-libron.calilIcon = 'data:image/png;base64,'+
-    'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'+
-    '/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oEBg4oF3uKapIAAACRSURBVDjL'+
-    'nVPbDcAgCDyJMziEC9URXaju0C5hPxoMUXzy40UOOFBMzhkAENL7g0WL3hkAoJNgGUMMonc71UsS'+
-    '0hwrwWxWI4T0NkTtrsxgVmWkjmQFPhnXCiSnSSArcBs9+RKb6362X0GqoBlJa2c4gxrP/KUF5ZN0'+
-    'sbQmwWgemjK7SuzOgLfqxKJ3huRqnqzzBwE6Xrqxh9tpAAAAAElFTkSuQmCC';
-
 // カーリルAPIキー
 //
 // このキーは動作確認用にお使いください。
@@ -155,7 +112,7 @@ function addSelectBox() {
   var div = libron.createElement("div", {id: "libron_select"}, null);
   var titleDiv = libron.createElement("div", {class: "libron_left"});
   var titleSpan = libron.createElement("span", {id: "title"}, " ver." + libron.version);
-  var logoImg = libron.createElement("img", {src: libron.logo}, null);
+  var logoImg = libron.createElement("img", {src: chrome.runtime.getURL('images/logo.png')}, null);
   var infoDiv = libron.createElement("div", {id: "libron_info", class: "libron_right"});
   var currentLibrary = libron.createElement("span", {class: "libron_gray"}, "[" + libron.selectedPrefecture + "]" + libron.selectedSystemName + "で検索 ");
   var showLink = libron.createElement("a", {href: "javascript:void(0);"}, "変更");
@@ -525,7 +482,7 @@ function addLoadingIcon(objects, isbns) {
     var object = objects[i];
     var div = libron.createElement("div", {class: "libron_link_div", "data-isbn": isbns[i]}, null);
     var searchingSpan = libron.createElement("span", {class: "libron_gray"}, "図書館を検索中 ");
-    var loadingIconImg = libron.createElement("img", {src: libron.loadingIcon}, null);
+    var loadingIconImg = libron.createElement("img", {src: chrome.runtime.getURL("images/loading.gif")}, null);
     div.appendChild(searchingSpan);
     div.appendChild(loadingIconImg);
     object.parentNode.insertBefore(div, object.nextSibling);
@@ -547,7 +504,7 @@ function replaceWithLibraryLink(json){
     var raquo = document.createTextNode("» ");
     var calilLinkAnchor = libron.createElement("a", {href: "https://calil.jp/book/" + isbn, target:"_blank"}, "他の図書館で検索する(カーリル)");
     var space = document.createTextNode(" ");
-    var calilIconImg = libron.createElement("img", {src: libron.calilIcon}, null);
+    var calilIconImg = libron.createElement("img", {src: chrome.runtime.getURL("images/calil.png")}, null);
     calilLink.appendChild(raquo);
     calilLink.appendChild(calilLinkAnchor);
     calilLink.appendChild(space);
