@@ -131,7 +131,7 @@ function main() {
   console.log("*** Libron ver." + libron.version + " ***");
   libron.selectedSystemId = GM_getValue("selectedSystemId") ? decodeURIComponent(GM_getValue("selectedSystemId")) : 'Tokyo_Pref';
   libron.selectedSystemName = GM_getValue("selectedSystemName") ? decodeURIComponent(GM_getValue("selectedSystemName")) : '東京都立図書館';
-  libron.selectedPrefecture =　GM_getValue("selectedPrefecture")　? decodeURIComponent(GM_getValue("selectedPrefecture")) : '東京都';
+  libron.selectedPrefecture = GM_getValue("selectedPrefecture") ? decodeURIComponent(GM_getValue("selectedPrefecture")) : '東京都';
   libron.univChecked = (GM_getValue("univChecked") === "true") ? true : false;
   libron.systemNames = {};
 
@@ -553,9 +553,9 @@ function addLibraryLinksToBookList(){
   for (var i = 0; i < objects.length; i++) {
     var object = objects[i];
     for (var j = 0; j < object.parentNode.childNodes.length; j++) {
-       if ((object.parentNode.childNodes[j].className == 'libron_link_div') || (object.parentNode.childNodes[j].className == 'libron_loading_icon_div')){
-         continue outerloop;
-       }
+      if ((object.parentNode.childNodes[j].className == 'libron_link_div') || (object.parentNode.childNodes[j].className == 'libron_loading_icon_div')){
+        continue outerloop;
+      }
     }
 
     if ((object.className.indexOf("productTitle") != -1) || (object.className.indexOf("title") != -1) || (object.className.indexOf("fixed-line") != -1)){
@@ -614,7 +614,7 @@ function addLibraryLinksToWishList(){
 function addLibraryLinksToMobileBookPage(isbn){
   var hrs = parent.document.getElementsByTagName('hr');
   if (hrs.length > 0) {
-  　var hr = hrs[0];
+    var hr = hrs[0];
     addLoadingIcon([hr], [isbn]);
   }
 }
