@@ -24,6 +24,7 @@
       "https://www.amazon.co.jp/*",
       "http://www.amazon.co.jp/*"
     ],
-    "js":["libron.user.js"]
+    "js":["libron.js"],
+    "css":["libron.css"]
   }]
 }
