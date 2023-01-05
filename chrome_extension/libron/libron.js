@@ -1,17 +1,6 @@
 var libron = libron ? libron : new Object();
 libron.version = "3.0.16";
 
-// http://ja.wikipedia.org/wiki/都道府県 の並び順
-libron.prefectures = ["北海道",
-  "青森県","岩手県","宮城県","秋田県","山形県","福島県",
-  "茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県",
-  "新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県",
-  "三重県","滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県",
-  "鳥取県","島根県","岡山県","広島県","山口県",
-  "徳島県","香川県","愛媛県","高知県",
-  "福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県",
-  "沖縄県"];
-
 // カーリルAPIキー
 //
 // このキーは動作確認用にお使いください。
@@ -19,9 +8,6 @@ libron.prefectures = ["北海道",
 // カーリルAPIの利用規約(https://calil.jp/doc/api_license.html)を確認した上で、
 // http://calil.jp/api/dashboard/ より自分のAPIキーを申請し、それを使うようにしてください。
 libron.appkey = "7b38a6543c2d4423c00114f53f114655";
-
-libron.libraries = {};
-libron.libraryNames = {};
 
 libron.createElement = function(tagName, attributes, content) {
   var dom = document.createElement(tagName);
@@ -49,14 +35,9 @@ function main() {
       libron.selectedSystemId = value ? decodeURIComponent(value) : 'Tokyo_Pref';
       getValue("selectedPrefecture", (value) => {
         libron.selectedPrefecture = value ? decodeURIComponent(value) : '東京都';
-        getValue("univChecked", (value) => {
-          libron.univChecked = (value === "true");
-        });
       });
     });
   });
-
-  libron.systemNames = {};
 
   var href = document.location.href;
 
@@ -110,272 +91,6 @@ function isbnOfMobileBookPage(href) {
     return matched[1];
   }
   return false;
-}
-
-/*
- * ページ上部に図書館選択ボックスを表示
- */
-
-function addSelectBox() {
-  var div = libron.createElement("div", {id: "libron_select"}, null);
-  div.innerHTML = `
-    <div class="libron_left">
-      <img src="${chrome.runtime.getURL('images/logo.png')}" />
-      <span id="title"> ver.${libron.version}</span>
-      <span id="libron_news" class="libron_gray" />
-    </div>
-  `;
-
-  var infoDiv = libron.createElement("div", {id: "libron_info", class: "libron_right"});
-  var currentLibrary = libron.createElement("span", {class: "libron_gray"}, "[" + libron.selectedPrefecture + "]" + libron.selectedSystemName + "で検索 ");
-  var showLink = libron.createElement("a", {href: "javascript:void(0);"}, "変更");
-  var newsSpan = libron.createElement("span", {id: "libron_news", class: "libron_gray"}, "");
-  showLink.addEventListener("click", showSelectBox, false);
-
-  infoDiv.appendChild(currentLibrary);
-  infoDiv.appendChild(showLink);
-
-  var univCheckBox = document.createElement("input");
-  univCheckBox.type = "checkbox";
-  univCheckBox.id = "univ";
-  univCheckBox.checked = libron.univChecked;
-
-  var univCheckBoxLabel = libron.createElement("label", {for: "univ", class: "libron_gray"}, "大学図書館も表示");
-  univCheckBox.addEventListener("change", function(){
-    selectBoxDiv.replaceChild(loadingMessage, selectBoxDiv.childNodes[3]);
-    libron.univChecked = univCheckBox.checked;
-    updateLibrarySelectBox(selectBoxDiv, prefectureSelect.value, libron.univChecked);
-  }, false);
-
-  var prefectureSelect = libron.createElement("select", {id: "prefecture_select"}, null);
-
-  for (var i in libron.prefectures) {
-    var option = document.createElement('option');
-    option.value = libron.prefectures[i];
-    option.textContent = libron.prefectures[i];
-    if (libron.prefectures[i] == libron.selectedPrefecture) {
-      option.selected = true;
-    }
-    prefectureSelect.appendChild(option);
-  }
-
-  var loadingMessage = libron.createElement("span", {id: "loading-message"}, "データ取得中...");
-  var btn = libron.createElement("button", null, "保存");
-  var hideLink = libron.createElement("a", {href: "javascript:void(0);"}, "キャンセル");
-  hideLink.addEventListener("click", hideSelectBox, false);
-  var selectBoxDiv = libron.createElement("div", {id: "libron_select_box", class: "libron_right"}, null);
-
-  selectBoxDiv.appendChild(univCheckBox);
-  selectBoxDiv.appendChild(univCheckBoxLabel);
-  selectBoxDiv.appendChild(prefectureSelect);
-  selectBoxDiv.appendChild(loadingMessage);
-  selectBoxDiv.appendChild(btn);
-  selectBoxDiv.appendChild(hideLink);
-
-  updateLibrarySelectBox(selectBoxDiv, libron.selectedPrefecture, libron.univChecked);
-
-  prefectureSelect.addEventListener("change", function(){
-    selectBoxDiv.replaceChild(loadingMessage, selectBoxDiv.childNodes[3]);
-    libron.selectedPrefecture = prefectureSelect.value;
-    updateLibrarySelectBox(selectBoxDiv, prefectureSelect.value, libron.univChecked);
-  }, false);
-
-  var clearDiv = libron.createElement("div", {class: "libron_clear"}, null);
-
-  div.appendChild(infoDiv);
-  div.appendChild(selectBoxDiv);
-  div.appendChild(clearDiv);
-
-  document.body.insertBefore(div, document.body.childNodes[0]);
-
-  btn.addEventListener("click", function(){
-    var options = {
-      'prefecture': prefectureSelect.value,
-      'systemid': selectBoxDiv.childNodes[3].value,
-      'systemname': libron.systemNames[selectBoxDiv.childNodes[3].value],
-      'univChecked': univCheckBox.checked
-    };
-    saveSelection(options);
-    window.location.reload();
-  }, false);
-
-  chrome.runtime.sendMessage({
-    contentScriptQuery: "queryNews",
-  }, function(news) {
-    document.querySelector('#libron_news').innerHTML = news;
-  });
-}
-
-/*
- * 図書館選択ボックス関連
- */
-
-function showSelectBox() {
-  document.getElementById('libron_info').style.display = 'none';
-  document.getElementById('libron_select_box').style.display = 'block';
-  document.getElementById('libron_news').style.display = 'none';
-  return false;
-}
-
-function hideSelectBox() {
-  document.getElementById('libron_info').style.display = 'block';
-  document.getElementById('libron_select_box').style.display = 'none';
-  document.getElementById('libron_news').style.display = 'span';
-  return false;
-}
-
-function createLibraryNames(prefecture, libraries, cities) {
-  var smallMediumLibrariesObject = {};
-  var smallMediumLibraries = [];
-  var largeLibraries = [];
-  var univLibraries = [];
-  var otherLibraries = [];
-
-  for (var i in libraries[prefecture]) {
-    var library = libraries[prefecture][i];
-    var data = {'systemid':library.systemid, 'systemname':library.systemname};
-
-    if ((library.category == "SMALL") || (library.category == "MEDIUM")) {
-      if (smallMediumLibrariesObject[library.systemname]) {
-        smallMediumLibrariesObject[library.systemname].push(data);
-      } else {
-        smallMediumLibrariesObject[library.systemname] = [data];
-      }
-    } else if (library.category == "LARGE") {
-      largeLibraries.push(data);
-    } else if (library.category == "UNIV") {
-      univLibraries.push(data);
-    } else {
-      otherLibraries.push(data);
-    }
-  }
-
-  var kanas = ['あ','か','さ','た','な','は','ま','や','ら','わ'];
-  for (var i in kanas) {
-    var kana = kanas[i];
-    if (cities[kana]) {
-      for (var j in cities[kana]){
-        city_name = cities[kana][j];
-        if (smallMediumLibrariesObject[prefecture + city_name]) {
-          smallMediumLibrariesObject[prefecture + city_name][0]["kana"] = kana;
-          smallMediumLibraries = smallMediumLibraries.concat(smallMediumLibrariesObject[prefecture + city_name]);
-        }
-      }
-    }
-  }
-
-  var libraryNamesArray = [];
-
-  for (var i in smallMediumLibraries) {
-    var smallMediumLibrary = smallMediumLibraries[i];
-    if (libron.systemNames[smallMediumLibrary.systemid]) {
-      continue;
-    }
-    smallMediumLibrary['group'] = '図書館(地域)';
-    libraryNamesArray.push(smallMediumLibrary);
-    libron.systemNames[smallMediumLibrary.systemid] = smallMediumLibrary.systemname;
-  }
-
-  for (var i in largeLibraries) {
-    var largeLibrary = largeLibraries[i];
-    if (libron.systemNames[largeLibrary.systemid]) {
-      continue;
-    }
-    largeLibrary['group'] = '図書館(広域)';
-    libraryNamesArray.push(largeLibrary);
-    libron.systemNames[largeLibrary.systemid] = largeLibrary.systemname;
-  }
-
-  for (var i in univLibraries) {
-    var univLibrary = univLibraries[i];
-    if (libron.systemNames[univLibrary.systemid]) {
-      continue;
-    }
-    univLibrary['group'] = '図書館(大学)';
-    libraryNamesArray.push(univLibrary);
-    libron.systemNames[univLibrary.systemid] = univLibrary.systemname;
-  }
-
-  for (var i in otherLibraries) {
-    var otherLibrary = otherLibraries[i];
-    if (libron.systemNames[otherLibrary.systemid]) {
-      continue;
-    }
-    otherLibrary['group'] = '移動・その他';
-    libraryNamesArray.push(otherLibrary);
-    libron.systemNames[otherLibrary.systemid] = otherLibrary.systemname;
-  }
-  return libraryNamesArray;
-}
-
-function updateLibrarySelectBox(selectBoxDiv, prefecture, univ) {
-  if (!univ) univ = false;
-  if (libron.libraryNames[prefecture]) {
-    selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
-  } else {
-    chrome.runtime.sendMessage({
-      contentScriptQuery: "queryLibraries",
-      appkey: libron.appkey,
-      prefecture: prefecture
-    }, function(libraries) {
-      chrome.runtime.sendMessage({
-        contentScriptQuery: "queryCities"
-      }, function(cities) {
-        var parsedCities = JSON.parse(cities);
-        libron.libraries[prefecture] = JSON.parse(libraries);
-        libron.libraryNames[prefecture] = createLibraryNames(prefecture, libron.libraries, parsedCities[prefecture]);
-        selectBoxDiv.replaceChild(createLibrarySelectBox(prefecture, libron.libraryNames[prefecture], univ), selectBoxDiv.childNodes[3]);
-      });
-    });
-  }
-}
-
-function createLibrarySelectBox(prefecture, libraryNames, univ) {
-  var select = document.createElement("select");
-  var groups;
-  if (univ) {
-    groups = ['図書館(地域)', 'あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', '図書館(広域)', '図書館(大学)', '移動・その他'];
-  } else {
-    groups = ['図書館(地域)', 'あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', '図書館(広域)', '移動・その他'];
-  }
-
-  var optGroups = {};
-  for (var i in groups) {
-    optGroups[groups[i]] = document.createElement('optgroup');
-    optGroups[groups[i]].label = groups[i];
-  }
-
-  for (var i in libraryNames) {
-    var option = document.createElement('option');
-    option.value = libraryNames[i]['systemid'];
-    var regExp = new RegExp("^" + prefecture);
-    option.textContent = libraryNames[i]['systemname'].replace(regExp, '');
-
-    if (libraryNames[i]['systemid'] == libron.selectedSystemId) {
-      option.selected = true;
-    }
-
-    if (optGroups[libraryNames[i]['group']]) {
-      if (libraryNames[i]['group'] === '図書館(地域)') {
-        optGroups[libraryNames[i]['kana']].appendChild(option);
-      } else {
-        optGroups[libraryNames[i]['group']].appendChild(option);
-      }
-    }
-  }
-  for (var i in groups) {
-    if (optGroups[groups[i]].childNodes.length > 0 || groups[i] == '図書館(地域)') {
-      select.appendChild(optGroups[groups[i]]);
-    }
-  }
-  return select;
-}
-
-function saveSelection(options){
-  setValue("selectedPrefecture", encodeURIComponent(options.prefecture));
-  setValue("selectedSystemId", encodeURIComponent(options.systemid));
-  setValue("selectedSystemName", encodeURIComponent(options.systemname));
-  setValue("univChecked", options.univChecked === true ? "true" : "false");
 }
 
 /*
@@ -580,14 +295,6 @@ function replaceWithLibraryLink(json){
       }
     }
   }
-}
-
-function setValue(key, value) {
-  chrome.runtime.sendMessage({
-    contentScriptQuery: "setValue",
-    key: key,
-    value: value
-  }, null);
 }
 
 function getValue(key, callback) {
