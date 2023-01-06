@@ -8,13 +8,15 @@
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
-  "version": "3.0.15",
+  "version": "3.0.16",
   "description": "Amazon のページから最寄りの図書館の蔵書を検索",
   "host_permissions": [
     "https://libron.net/news.txt",
     "https://api.calil.jp/library",
     "https://api.calil.jp/check",
-    "https://calil.jp/city_list"
+    "https://calil.jp/city_list",
+    "https://www.amazon.co.jp/*",
+    "http://www.amazon.co.jp/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -30,5 +32,12 @@
   "web_accessible_resources": [{
     "resources": ["images/*"],
     "matches": ["<all_urls>"]
-  }]
+  }],
+  "action": {
+    "default_popup": "settings.html",
+    "default_title": "Libron - 図書館の設定"
+  },
+  "permissions": [
+    "storage"
+  ]
 }
