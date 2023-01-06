@@ -34,7 +34,8 @@
     "matches": ["<all_urls>"]
   }],
   "action": {
-    "default_popup": "settings.html"
+    "default_popup": "settings.html",
+    "default_title": "Libron - 図書館の設定"
   },
   "permissions": [
     "storage"

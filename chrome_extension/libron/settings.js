@@ -3,6 +3,7 @@ let selectedPrefecture;
 let selectedSystemName;
 let selectedSystemId;
 let univChecked;
+let settingsChanged;
 let libraries = {};
 let prefectures = [];
 
@@ -25,11 +26,12 @@ document.querySelector('#cancel_link').addEventListener('click', (e) => {
 
 document.querySelector('#save').addEventListener('click', (e) => {
   e.preventDefault();
-  setValue("selectedGroup", document.querySelector('#library_select option:checked').parentNode.label);
-  setValue("selectedPrefecture", document.querySelector('#prefecture_select').value);
-  setValue("selectedSystemId", document.querySelector('#library_select').value);
-  setValue("selectedSystemName", document.querySelector('#library_select option:checked').text);
-  setValue("univChecked", univChecked);
+  setValue('selectedGroup', document.querySelector('#library_select option:checked').parentNode.label);
+  setValue('selectedPrefecture', document.querySelector('#prefecture_select').value);
+  setValue('selectedSystemId', document.querySelector('#library_select').value);
+  setValue('selectedSystemName', document.querySelector('#library_select option:checked').text);
+  setValue('univChecked', univChecked);
+  setValue('settingsChanged', true);
 
   updateUi();
   hideSelect();
@@ -42,7 +44,7 @@ document.querySelector('#prefecture_select').addEventListener('change', () => {
   updateLibrarySelect();
 });
 
-document.querySelector('#univ_checkbox').addEventListener("change", function(){
+document.querySelector('#univ_checkbox').addEventListener('change', function(){
   univChecked = document.querySelector('#univ_checkbox').checked;
   updateLibrarySelect();
 });
@@ -58,38 +60,41 @@ const hideSelect = () => {
 }
 
 const updateNews = async () => {
-  const response = await fetch("https://libron.net/news.txt");
+  const response = await fetch('https://libron.net/news.txt');
   const news = await response.text();
   document.querySelector('#news').innerHTML = news;
 }
 
 const getLibraries = async () => {
-  const librariesResponse = await fetch("https://champierre.github.io/libron-api/libraries.json");
+  const librariesResponse = await fetch('https://champierre.github.io/libron-api/libraries.json');
   const librariesText = await librariesResponse.text();
   return JSON.parse(librariesText);
 }
 
 const setupPrefectureSelect = () => {
-  document.querySelector("select#prefecture_select").innerHTML = prefectures.map(prefecture => {
+  document.querySelector('select#prefecture_select').innerHTML = prefectures.map(prefecture => {
     return `<option value='${prefecture}'${prefecture === selectedPrefecture ? ' selected' : ''}>${prefecture}</option>`;
   }).join("\n");
 }
 
 const updateUi = () => {
-  getValue("selectedGroup", (value) => {
-    selectedGroup = value || '図書館(広域)';
-    getValue("selectedSystemName", (value) => {
-      selectedSystemName = value || '東京都立図書館';
-      getValue("selectedSystemId", (value) => {
-        selectedSystemId = value || 'Tokyo_Pref';
-        getValue("selectedPrefecture", (value) => {
-          selectedPrefecture = value || '東京都';
-          getValue("univChecked", async (value) => {
-            univChecked = value || false;
-            document.querySelector('#univ_checkbox').checked = univChecked;
-            setupPrefectureSelect();
-            updateLibrarySelect();
-            document.querySelector("#info span").innerHTML = `[${selectedPrefecture}]${selectedSystemName}で検索`;
+  getValue('settingsChanged', (value) => {
+    settingsChanged = value || false;
+    getValue('selectedGroup', (value) => {
+      selectedGroup = value || '図書館(広域)';
+      getValue('selectedSystemName', (value) => {
+        selectedSystemName = value || '東京都立図書館';
+        getValue('selectedSystemId', (value) => {
+          selectedSystemId = value || 'Tokyo_Pref';
+          getValue('selectedPrefecture', (value) => {
+            selectedPrefecture = value || '東京都';
+            getValue('univChecked', async (value) => {
+              univChecked = value || false;
+              document.querySelector('#univ_checkbox').checked = univChecked;
+              setupPrefectureSelect();
+              updateLibrarySelect();
+              document.querySelector('#info span').innerHTML = `[${selectedPrefecture}]${selectedSystemName}で検索`;
+            });
           });
         });
       });
@@ -98,7 +103,7 @@ const updateUi = () => {
 }
 
 const updateLibrarySelect = () => {
-  let optgroups = "";
+  let optgroups = '';
   for (const group in libraries[selectedPrefecture]) {
     const options = libraries[selectedPrefecture][group].map(library => {
       return `<option value='${library.value}'${isSelected(group, library) ? ' selected' : ''}>${library.name}</option>`;
@@ -116,7 +121,7 @@ const isSelected = (group, library) => {
 
 const setValue = (key, value) => {
   chrome.runtime.sendMessage({
-    contentScriptQuery: "setValue",
+    contentScriptQuery: 'setValue',
     key: key,
     value: value
   });
@@ -124,7 +129,7 @@ const setValue = (key, value) => {
 
 const getValue = async (key, callback) => {
   chrome.runtime.sendMessage({
-    contentScriptQuery: "getValue",
+    contentScriptQuery: 'getValue',
     key: key
   }).then(value => {
     callback(value);
@@ -134,8 +139,8 @@ const getValue = async (key, callback) => {
 const reloadAmazonTabs = async () => {
   const tabs = await chrome.tabs.query({
     url: [
-      "https://www.amazon.co.jp/*",
-      "http://www.amazon.co.jp/*"
+      'https://www.amazon.co.jp/*',
+      'http://www.amazon.co.jp/*'
     ],
   });
   tabs.map(tab => chrome.tabs.reload(tab.id));
