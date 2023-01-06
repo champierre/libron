@@ -4,10 +4,13 @@ let selectedSystemName;
 let selectedSystemId;
 let univChecked;
 let libraries = {};
+let prefectures = [];
 
 document.addEventListener('DOMContentLoaded', async (e) => {
   updateNews();
-  updateInfo();
+  libraries = await getLibraries();
+  prefectures = Object.keys(libraries);
+  updateUi();
 });
 
 document.querySelector('#update_link').addEventListener('click', (e) => {
@@ -22,16 +25,16 @@ document.querySelector('#cancel_link').addEventListener('click', (e) => {
 
 document.querySelector('#save').addEventListener('click', (e) => {
   e.preventDefault();
-  
   setValue("selectedGroup", document.querySelector('#library_select option:checked').parentNode.label);
   setValue("selectedPrefecture", document.querySelector('#prefecture_select').value);
   setValue("selectedSystemId", document.querySelector('#library_select').value);
   setValue("selectedSystemName", document.querySelector('#library_select option:checked').text);
   setValue("univChecked", univChecked);
 
-  reloadAmazonTabs();
-  updateInfo();
+  updateUi();
   hideSelect();
+
+  reloadAmazonTabs();
 });
 
 document.querySelector('#prefecture_select').addEventListener('change', () => {
@@ -66,13 +69,13 @@ const getLibraries = async () => {
   return JSON.parse(librariesText);
 }
 
-const setupPrefectureSelect = (prefectures) => {
+const setupPrefectureSelect = () => {
   document.querySelector("select#prefecture_select").innerHTML = prefectures.map(prefecture => {
     return `<option value='${prefecture}'${prefecture === selectedPrefecture ? ' selected' : ''}>${prefecture}</option>`;
   }).join("\n");
 }
 
-const updateInfo = () => {
+const updateUi = () => {
   getValue("selectedGroup", (value) => {
     selectedGroup = value || '図書館(広域)';
     getValue("selectedSystemName", (value) => {
@@ -84,9 +87,7 @@ const updateInfo = () => {
           getValue("univChecked", async (value) => {
             univChecked = value || false;
             document.querySelector('#univ_checkbox').checked = univChecked;
-            libraries = await getLibraries();
-            const prefectures = Object.keys(libraries);
-            setupPrefectureSelect(prefectures);
+            setupPrefectureSelect();
             updateLibrarySelect();
             document.querySelector("#info span").innerHTML = `[${selectedPrefecture}]${selectedSystemName}で検索`;
           });
