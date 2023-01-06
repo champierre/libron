@@ -29,6 +29,12 @@ main();
 function main() {
   console.log("*** Libron ver." + libron.version + " ***");
 
+  var href = document.location.href;
+
+  if (parent != self) {
+    return;
+  }
+
   getValue("settingsChanged", (value) => {
     libron.settingsChanged = value || false;
     getValue("selectedSystemName", (value) => {
@@ -37,25 +43,18 @@ function main() {
         libron.selectedSystemId = value || 'Tokyo_Pref';
         getValue("selectedPrefecture", (value) => {
           libron.selectedPrefecture = value || '東京都';
+
+          if (isbnOfBookPage(href)) {
+            addLibraryLinksToBookPage(isbnOfBookPage(href));
+          } else if (isWishList(href)) {
+            addLibraryLinksToWishList();
+          } else if (isbnOfMobileBookPage(href)) {
+            addLibraryLinksToMobileBookPage(isbnOfMobileBookPage(href));
+          }
         });
       });
     });
   });
-
-  var href = document.location.href;
-
-  if (parent != self) {
-    return;
-  }
-
-  if (isbnOfBookPage(href)) {
-    addLibraryLinksToBookPage(isbnOfBookPage(href));
-  } else if (isWishList(href)) {
-    addLibraryLinksToWishList();
-  } else if (isbnOfMobileBookPage(href)) {
-    addLibraryLinksToMobileBookPage(isbnOfMobileBookPage(href));
-  }
-  return;
 }
 
 /*
