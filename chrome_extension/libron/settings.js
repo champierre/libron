@@ -1,3 +1,4 @@
+let selectedGroup;
 let selectedPrefecture;
 let selectedSystemName;
 let selectedSystemId;
@@ -16,16 +17,16 @@ document.querySelector('#update_link').addEventListener('click', (e) => {
 
 document.querySelector('#cancel_link').addEventListener('click', (e) => {
   e.preventDefault();
-  updateInfo();
   hideSelect();
 });
 
 document.querySelector('#save').addEventListener('click', (e) => {
   e.preventDefault();
-
+  
+  setValue("selectedGroup", document.querySelector('#library_select option:checked').parentNode.label);
   setValue("selectedPrefecture", document.querySelector('#prefecture_select').value);
   setValue("selectedSystemId", document.querySelector('#library_select').value);
-  setValue("selectedSystemName", document.querySelectorAll('#library_select option:checked')[0].text);
+  setValue("selectedSystemName", document.querySelector('#library_select option:checked').text);
   setValue("univChecked", univChecked);
 
   updateInfo();
@@ -71,20 +72,23 @@ const setupPrefectureSelect = (prefectures) => {
 }
 
 const updateInfo = () => {
-  getValue("selectedSystemName", (value) => {
-    selectedSystemName = value || '東京都立図書館';
-    getValue("selectedSystemId", (value) => {
-      selectedSystemId = value || 'Tokyo_Pref';
-      getValue("selectedPrefecture", (value) => {
-        selectedPrefecture = value || '東京都';
-        getValue("univChecked", async (value) => {
-          univChecked = value || false;
-          document.querySelector('#univ_checkbox').checked = univChecked;
-          libraries = await getLibraries();
-          const prefectures = Object.keys(libraries);
-          setupPrefectureSelect(prefectures);
-          updateLibrarySelect();
-          document.querySelector("#info span").innerHTML = `[${selectedPrefecture}]${selectedSystemName}で検索`;
+  getValue("selectedGroup", (value) => {
+    selectedGroup = value || '図書館(広域)';
+    getValue("selectedSystemName", (value) => {
+      selectedSystemName = value || '東京都立図書館';
+      getValue("selectedSystemId", (value) => {
+        selectedSystemId = value || 'Tokyo_Pref';
+        getValue("selectedPrefecture", (value) => {
+          selectedPrefecture = value || '東京都';
+          getValue("univChecked", async (value) => {
+            univChecked = value || false;
+            document.querySelector('#univ_checkbox').checked = univChecked;
+            libraries = await getLibraries();
+            const prefectures = Object.keys(libraries);
+            setupPrefectureSelect(prefectures);
+            updateLibrarySelect();
+            document.querySelector("#info span").innerHTML = `[${selectedPrefecture}]${selectedSystemName}で検索`;
+          });
         });
       });
     });
@@ -95,13 +99,17 @@ const updateLibrarySelect = () => {
   let optgroups = "";
   for (const group in libraries[selectedPrefecture]) {
     const options = libraries[selectedPrefecture][group].map(library => {
-      return `<option value='${library.value}'${library.value === selectedSystemId && library.name === selectedSystemName ? ' selected' : ''}>${library.name}</option>`;
+      return `<option value='${library.value}'${isSelected(group, library) ? ' selected' : ''}>${library.name}</option>`;
     }).join("\n");
     if (group !== '図書館(大学)' || univChecked) {
       optgroups += `<optgroup label='${group}'>${options}</optgroup>`;
     }
   }
   document.querySelector('#library_select').innerHTML = optgroups;
+}
+
+const isSelected = (group, library) => {
+  return library.value === selectedSystemId && library.name === selectedSystemName && group === selectedGroup
 }
 
 const setValue = (key, value) => {
