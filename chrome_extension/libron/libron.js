@@ -1,5 +1,5 @@
 var libron = libron ? libron : new Object();
-libron.version = "3.0.16";
+libron.version = "3.0.17";
 
 // カーリルAPIキー
 //
@@ -179,39 +179,35 @@ function addLoadingIcon(objects, isbns) {
 
   // callback function
   var checkLibrary = function(session) {
-    getValue("selectedSystemId", (value) => {
-      libron.selectedSystemId = value ? decodeURIComponent(value) : 'Tokyo_Pref';
-      chrome.runtime.sendMessage({
-        contentScriptQuery: "queryAvailabilityInLibrary",
-        appkey: libron.appkey,
-        isbns: isbns.join(','),
-        selectedSystemId: libron.selectedSystemId,
-        session: session
-      }, function(json) {
-        var parsedJson = JSON.parse(json);
-        var cont = parsedJson["continue"];
-        if (cont === 0) {
-          replaceWithLibraryLink(parsedJson);
-        } else {
-          //途中なので再度検索をおこなう
-          var session = parsedJson["session"];
-          if (session.length > 0) {
-            setTimeout(function(){
-              checkLibrary(session);
-            }, 2000);
-          }
+    chrome.runtime.sendMessage({
+      contentScriptQuery: "queryAvailabilityInLibrary",
+      appkey: libron.appkey,
+      isbns: isbns.join(','),
+      selectedSystemId: libron.selectedSystemId,
+      session: session
+    }, function(json) {
+      var parsedJson = JSON.parse(json);
+      var cont = parsedJson["continue"];
+      if (cont === 0) {
+        replaceWithLibraryLink(parsedJson);
+      } else {
+        //途中なので再度検索をおこなう
+        var session = parsedJson["session"];
+        if (session.length > 0) {
+          setTimeout(function(){
+            checkLibrary(session);
+          }, 2000);
         }
-      });
+      }
     });
   };
 
   for (var i = 0; i < objects.length; i++) {
     var object = objects[i];
-    var div = libron.createElement("div", {class: "libron_link_div", "data-isbn": isbns[i]}, null);
-    var searchingSpan = libron.createElement("span", {class: "libron_gray"}, '図書館を検索中 ');
-    var loadingIconImg = libron.createElement("img", {src: chrome.runtime.getURL("images/loading.gif")}, null);
-    div.appendChild(searchingSpan);
-    div.appendChild(loadingIconImg);
+    const div = document.createElement("div");
+    div.className = 'libron_link_div';
+    div.dataset.isbn = isbns[i];
+    div.innerHTML = `図書館を検索中 <img src="${chrome.runtime.getURL("images/loading.gif")}">`;
     object.parentNode.insertBefore(div, object.nextSibling);
   }
   checkLibrary(session);
@@ -223,26 +219,6 @@ function replaceWithLibraryLink(json){
     var div = divs[i];
     var isbn = div.getAttribute("data-isbn");
     var status = json["books"][isbn][libron.selectedSystemId]["status"];
-    var libkey;
-    var calil_library_links = [];
-    var libLink;
-
-    var calilLink = libron.createElement("div", {class: "calil_link"}, null);
-    var raquo = document.createTextNode("» ");
-    var calilLinkAnchor = libron.createElement("a", {href: "https://calil.jp/book/" + isbn, target:"_blank"}, "他の図書館で検索する(カーリル)");
-    var space = document.createTextNode(" ");
-    var calilIconImg = libron.createElement("img", {src: chrome.runtime.getURL("images/calil.png")}, null);  
-    calilLink.appendChild(raquo);
-    calilLink.appendChild(calilLinkAnchor);
-    calilLink.appendChild(space);
-    calilLink.appendChild(calilIconImg);
-
-    const okEmoji = document.createTextNode("✅");
-    const ngEmoji = document.createTextNode("❌");
-
-    const readme = document.createElement('div');
-    readme.className = 'libron_gray';
-    readme.innerHTML = '※ 図書館を設定するには、Libronを拡張機能のバーに表示して、アイコンをクリックして下さい。[<a href="https://libron.net/top/usage" target="_blank">詳細はこちら</a>]';
 
     if (div.hasChildNodes()) {
       while(div.childNodes.length >= 1) {
@@ -251,67 +227,35 @@ function replaceWithLibraryLink(json){
     }
 
     if (status && status == "Error") {
-      libLink = libron.createElement("div", {class: "libron_gray"}, null);
-      const errorMsg = document.createTextNode(`[${libron.selectedPrefecture}]${libron.selectedSystemName}で検索して、エラーが発生しました。`);
-      libLink.appendChild(errorMsg);
-      libLink.appendChild(ngEmoji);
-      div.appendChild(libLink);
-      div.appendChild(calilLink);
-
-      if (!libron.settingsChanged) {
-        div.appendChild(readme);
-      }
+      div.innerHTML = `
+        <div>[${libron.selectedPrefecture}]${libron.selectedSystemName}で検索して、エラーが発生しました。❌</div>
+        <div>» <a href="https://calil.jp/book/${isbn}" target="_blank">他の図書館で検索する(カーリル)</a> <img src="${chrome.runtime.getURL("images/calil.png")}"></div>
+      `;
     } else {
-      libkey = json["books"][isbn][libron.selectedSystemId]["libkey"];
+      const libkey = json["books"][isbn][libron.selectedSystemId]["libkey"];
+      let calil_library_links = [];
       for (var key in libkey) {
-        var calil_library_link = libron.createElement("a", {href: "https://calil.jp/library/search?s=" + encodeURIComponent(libron.selectedSystemId) + "&k=" + encodeURIComponent(key), target: "_blank"}, key + "(" + libkey[key] + ")");
+        const calil_library_link = `<a href="https://calil.jp/library/search?s=${encodeURIComponent(libron.selectedSystemId)}&k=${encodeURIComponent(key)}" target="_blank">${key}(${libkey[key]})</a>`;
         calil_library_links.push(calil_library_link);
       }
       if (calil_library_links.length > 0) {
         var reserveurl = json["books"][isbn][libron.selectedSystemId]["reserveurl"] + "&asin=" + encodeURIComponent(isbn);
         if (reserveurl) {
-          libLink = libron.createElement("div", {class: "libron_gray"}, null);
-          var raquo = document.createTextNode("» ");
-          var reserveUrlAnchor = libron.createElement("a", {"href":reserveurl, "target":"_blank"}, `[${libron.selectedPrefecture}]${libron.selectedSystemName}で予約する。`);
-          var space = document.createTextNode(" ");
-          libLink.appendChild(raquo);
-          libLink.appendChild(reserveUrlAnchor);
-          libLink.appendChild(space);
-          libLink.appendChild(okEmoji);
-          div.appendChild(libLink);
-          if (!libron.settingsChanged) {
-            div.appendChild(readme);
-          }    
+          div.innerHTML = `<div>» <a href="${reserveurl}">[${libron.selectedPrefecture}]${libron.selectedSystemName}で予約する。</a>✅</div>`;
         } else {
-          libLink = libron.createElement("div", {class: "libron_gray"}, null);
-          var okMsg = document.createTextNode(`[${libron.selectedPrefecture}]${libron.selectedSystemName}に蔵書あり。`);
-          var space = document.createTextNode(" ");
-          libLink.appendChild(okMsg);
-          libLink.appendChild(okEmoji);
-          libLink.appendChild(space);
-          for (var i = 0; i < calil_library_links.length; i++) {
-            libLink.appendChild(calil_library_links[i]);
-            if (i !== calil_library_links.length - 1) {
-              var hyphen = document.createTextNode(" - ");
-              libLink.appendChild(hyphen);
-            }
-          }
-          div.appendChild(libLink);
-          if (!libron.settingsChanged) {
-            div.appendChild(readme);
-          }    
+          div.innerHTML = `<div>[${libron.selectedPrefecture}]${libron.selectedSystemName}に蔵書あり。✅</div>`;
+          div.innerHTML += `<div>${calil_library_links.join(' - ')}<div>`;
         }
       } else {
-        libLink = libron.createElement("div", {class: "libron_gray"}, null);
-        var notFoundMsg = document.createTextNode(`[${libron.selectedPrefecture}]${libron.selectedSystemName}には見つかりません。`);
-        libLink.appendChild(notFoundMsg);
-        libLink.appendChild(ngEmoji);
-        div.appendChild(libLink);
-        div.appendChild(calilLink);
-        if (!libron.settingsChanged) {
-          div.appendChild(readme);
-        }
+        div.innerHTML = `
+          <div>[${libron.selectedPrefecture}]${libron.selectedSystemName}には見つかりません。❌</div>
+          <div>» <a href="https://calil.jp/book/${isbn}" target="_blank">他の図書館で検索する(カーリル)</a> <img src="${chrome.runtime.getURL("images/calil.png")}"></div>
+        `;
       }
+    }
+
+    if (!libron.settingsChanged) {
+      div.innerHTML += `<strong>※ 図書館を設定するには、Libronを拡張機能のバーに表示して、アイコンをクリックして下さい。[<a href="https://libron.net/top/usage" target="_blank">詳細はこちら</a>]</strong>`;
     }
   }
 }
