@@ -253,7 +253,7 @@ function replaceWithLibraryLink(json){
 
     if (status && status == "Error") {
       libLink = libron.createElement("div", {class: "libron_gray"}, null);
-      const errorMsg = document.createTextNode(`${libron.selectedSystemName}で検索して、エラーが発生しました。`);
+      const errorMsg = document.createTextNode(`[${libron.selectedPrefecture}]${libron.selectedSystemName}で検索して、エラーが発生しました。`);
       libLink.appendChild(errorMsg);
       libLink.appendChild(ngEmoji);
       div.appendChild(libLink);
@@ -273,7 +273,7 @@ function replaceWithLibraryLink(json){
         if (reserveurl) {
           libLink = libron.createElement("div", {class: "libron_gray"}, null);
           var raquo = document.createTextNode("» ");
-          var reserveUrlAnchor = libron.createElement("a", {"href":reserveurl, "target":"_blank"}, libron.selectedSystemName + "で予約する。");
+          var reserveUrlAnchor = libron.createElement("a", {"href":reserveurl, "target":"_blank"}, `[${libron.selectedPrefecture}]${libron.selectedSystemName}で予約する。`);
           var space = document.createTextNode(" ");
           libLink.appendChild(raquo);
           libLink.appendChild(reserveUrlAnchor);
@@ -285,7 +285,7 @@ function replaceWithLibraryLink(json){
           }    
         } else {
           libLink = libron.createElement("div", {class: "libron_gray"}, null);
-          var okMsg = document.createTextNode(libron.selectedSystemName + "に蔵書あり。");
+          var okMsg = document.createTextNode(`[${libron.selectedPrefecture}]${libron.selectedSystemName}に蔵書あり。`);
           var space = document.createTextNode(" ");
           libLink.appendChild(okMsg);
           libLink.appendChild(okEmoji);
@@ -304,7 +304,7 @@ function replaceWithLibraryLink(json){
         }
       } else {
         libLink = libron.createElement("div", {class: "libron_gray"}, null);
-        var notFoundMsg = document.createTextNode(libron.selectedSystemName + "には見つかりません。");
+        var notFoundMsg = document.createTextNode(`[${libron.selectedPrefecture}]${libron.selectedSystemName}には見つかりません。`);
         libLink.appendChild(notFoundMsg);
         libLink.appendChild(ngEmoji);
         div.appendChild(libLink);
