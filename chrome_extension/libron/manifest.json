@@ -14,7 +14,9 @@
     "https://libron.net/news.txt",
     "https://api.calil.jp/library",
     "https://api.calil.jp/check",
-    "https://calil.jp/city_list"
+    "https://calil.jp/city_list",
+    "https://www.amazon.co.jp/*",
+    "http://www.amazon.co.jp/*"
   ],
   "background": {
     "service_worker": "background.js"

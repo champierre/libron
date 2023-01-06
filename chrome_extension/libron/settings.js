@@ -29,6 +29,7 @@ document.querySelector('#save').addEventListener('click', (e) => {
   setValue("selectedSystemName", document.querySelector('#library_select option:checked').text);
   setValue("univChecked", univChecked);
 
+  reloadAmazonTabs();
   updateInfo();
   hideSelect();
 });
@@ -127,4 +128,14 @@ const getValue = async (key, callback) => {
   }).then(value => {
     callback(value);
   });
+}
+
+const reloadAmazonTabs = async () => {
+  const tabs = await chrome.tabs.query({
+    url: [
+      "https://www.amazon.co.jp/*",
+      "http://www.amazon.co.jp/*"
+    ],
+  });
+  tabs.map(tab => chrome.tabs.reload(tab.id));
 }
