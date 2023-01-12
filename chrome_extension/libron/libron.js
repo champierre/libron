@@ -50,6 +50,8 @@ function main() {
             addLibraryLinksToWishList();
           } else if (isbnOfMobileBookPage(href)) {
             addLibraryLinksToMobileBookPage(isbnOfMobileBookPage(href));
+          } else if (isKindleOrAudiblePage(href)) {
+            addLibraryLinksToKindleOrAudioPage();
           }
         });
       });
@@ -93,6 +95,10 @@ function isbnOfMobileBookPage(href) {
     return matched[1];
   }
   return false;
+}
+
+function isKindleOrAudiblePage(href) {
+  return /\/dp\/[\dA-Z]{10}/.test(href);
 }
 
 /*
@@ -172,6 +178,14 @@ function addLibraryLinksToMobileBookPage(isbn){
     var hr = hrs[0];
     addLoadingIcon([hr], [isbn]);
   }
+}
+
+function addLibraryLinksToKindleOrAudioPage() {
+  const isbn = Array.prototype.map.call(document.querySelectorAll("#MediaMatrix .a-button-inner a"), (elem) => {
+    return isbnOfBookPage(elem.href)
+  }).find(isbn => isbn !== false);
+
+  addLibraryLinksToBookPage(isbn);
 }
 
 function addLoadingIcon(objects, isbns) {
