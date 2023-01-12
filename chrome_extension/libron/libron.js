@@ -229,7 +229,7 @@ function replaceWithLibraryLink(json){
     if (status && status == "Error") {
       div.innerHTML = `
         <div>[${libron.selectedPrefecture}]${libron.selectedSystemName}で検索して、エラーが発生しました。❌</div>
-        <div>» <a href="https://calil.jp/book/${isbn}" target="_blank">他の図書館で検索する(カーリル)</a> <img src="${chrome.runtime.getURL("images/calil.png")}"></div>
+        <div>» <a href="https://calil.jp/book/${isbn}" target="_blank" rel=”noopener”>他の図書館で検索する(カーリル)</a> <img src="${chrome.runtime.getURL("images/calil.png")}"></div>
       `;
     } else {
       const libkey = json["books"][isbn][libron.selectedSystemId]["libkey"];
@@ -241,7 +241,7 @@ function replaceWithLibraryLink(json){
       if (calil_library_links.length > 0) {
         var reserveurl = json["books"][isbn][libron.selectedSystemId]["reserveurl"] + "&asin=" + encodeURIComponent(isbn);
         if (reserveurl) {
-          div.innerHTML = `<div>» <a href="${reserveurl}">[${libron.selectedPrefecture}]${libron.selectedSystemName}で予約する。</a>✅</div>`;
+          div.innerHTML = `<div>» <a href="${reserveurl}" target="_blank" rel=”noopener”>[${libron.selectedPrefecture}]${libron.selectedSystemName}で予約する。</a>✅</div>`;
         } else {
           div.innerHTML = `<div>[${libron.selectedPrefecture}]${libron.selectedSystemName}に蔵書あり。✅</div>`;
           div.innerHTML += `<div>${calil_library_links.join(' - ')}<div>`;
@@ -249,13 +249,13 @@ function replaceWithLibraryLink(json){
       } else {
         div.innerHTML = `
           <div>[${libron.selectedPrefecture}]${libron.selectedSystemName}には見つかりません。❌</div>
-          <div>» <a href="https://calil.jp/book/${isbn}" target="_blank">他の図書館で検索する(カーリル)</a> <img src="${chrome.runtime.getURL("images/calil.png")}"></div>
+          <div>» <a href="https://calil.jp/book/${isbn}" target="_blank" rel=”noopener”>他の図書館で検索する(カーリル)</a> <img src="${chrome.runtime.getURL("images/calil.png")}"></div>
         `;
       }
     }
 
     if (!libron.settingsChanged) {
-      div.innerHTML += `<strong>※ 図書館を設定するには、Libronを拡張機能のバーに表示して、アイコンをクリックして下さい。[<a href="https://libron.net/top/usage" target="_blank">詳細はこちら</a>]</strong>`;
+      div.innerHTML += `<strong>※ 図書館を設定するには、Libronを拡張機能のバーに表示して、アイコンをクリックして下さい。[<a href="https://libron.net/top/usage" target="_blank" rel=”noopener”>詳細はこちら</a>]</strong>`;
     }
   }
 }
