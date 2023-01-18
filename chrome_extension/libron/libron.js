@@ -1,5 +1,5 @@
 var libron = libron ? libron : new Object();
-libron.version = "3.0.17";
+libron.version = "3.0.18";
 
 // カーリルAPIキー
 //
