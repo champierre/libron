@@ -106,7 +106,11 @@ const updateLibrarySelect = () => {
   let optgroups = '';
   for (const group in libraries[selectedPrefecture]) {
     const options = libraries[selectedPrefecture][group].map(library => {
-      return `<option value='${library.value}'${isSelected(group, library) ? ' selected' : ''}>${library.name}</option>`;
+      if (library.value) {
+        return `<option value='${library.value}'${isSelected(group, library) ? ' selected' : ''}>${library.name}</option>`;
+      } else {
+        return `<option disabled>${library.name}(未対応または図書館なし)</option>`;
+      }
     }).join("\n");
     if (group !== '図書館(大学)' || univChecked) {
       optgroups += `<optgroup label='${group}'>${options}</optgroup>`;

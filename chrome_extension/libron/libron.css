@@ -1,10 +1,7 @@
-.libron_gray {
-  color:#666666;
-}
-
 div.libron_link_div {
+  color:#666666;
   display:table;
-  width:360px;
+  width:380px;
   padding:7px;
   border:1px solid #cbc6bd;
   background:#e8e4db;
@@ -14,7 +11,7 @@ div.libron_link_div {
   margin-bottom:10px;
 }
 
-div.libron_link_div div {
+div.libron_link_div div:not(:first-child) {
   padding:0 !important;
   margin-top:5px !important;
 }
