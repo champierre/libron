@@ -185,7 +185,9 @@ function addLibraryLinksToKindleOrAudioPage() {
     return isbnOfBookPage(elem.href)
   }).find(isbn => isbn !== false);
 
-  addLibraryLinksToBookPage(isbn);
+  if (isbn) {
+    addLibraryLinksToBookPage(isbn);
+  }
 }
 
 function addLoadingIcon(objects, isbns) {
