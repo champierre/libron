@@ -8,7 +8,7 @@
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "Amazon のページから最寄りの図書館の蔵書を検索",
   "host_permissions": [
     "https://libron.net/news.txt",

@@ -1,5 +1,5 @@
 var libron = libron ? libron : new Object();
-libron.version = "3.0.17";
+libron.version = "3.0.18";
 
 // カーリルAPIキー
 //
@@ -185,7 +185,9 @@ function addLibraryLinksToKindleOrAudioPage() {
     return isbnOfBookPage(elem.href)
   }).find(isbn => isbn !== false);
 
-  addLibraryLinksToBookPage(isbn);
+  if (isbn) {
+    addLibraryLinksToBookPage(isbn);
+  }
 }
 
 function addLoadingIcon(objects, isbns) {
