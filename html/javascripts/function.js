@@ -53,6 +53,17 @@ function loadPage(pageName) {
 		.then(html => {
 			// 取得したHTMLをmain-areaに直接挿入
 			$("#main-area").html(html);
+			
+			// お問い合わせページまたはプライバシーポリシーページの場合、特定の要素を非表示にする
+			if (pageName === 'contact.html' || pageName === 'pp.html') {
+				$("#sub-area, #visual, #navigation").hide();
+			} else {
+				// それ以外のページでは表示する
+				$("#sub-area, #visual, #navigation").show();
+			}
+			
+			// ページの一番上にスクロールする
+			window.scrollTo(0, 0);
 		})
 		.catch(error => {
 			console.error('コンテンツの読み込み中にエラーが発生しました:', error);
