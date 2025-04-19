@@ -45,7 +45,11 @@ function slideVisual(){
 	);
 }
 
-
+// ページコンテンツを読み込む関数
+function loadPage(pageName) {
+	// ページ全体をリロードする
+	window.location.href = pageName;
+}
 
 //////////////////////////////////////////////////////
 
