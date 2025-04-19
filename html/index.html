@@ -13,6 +13,23 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="./javascripts/jquery.featureList-1.0.0.js"></script>
 <script type="text/javascript" src="./javascripts/function.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  // つかいかたの画像がクリックされたとき
+  $("img[alt='つかいかた']").click(function(e) {
+    e.preventDefault();
+    // main-areaにiframeを作成してusage.htmlを表示
+    $("#main-area").html('<iframe src="usage.html" width="100%" height="800" frameborder="0"></iframe>');
+  });
+
+  // インストール方法の画像がクリックされたとき
+  $("img[alt='インストール方法']").click(function(e) {
+    e.preventDefault();
+    // main-areaにiframeを作成してinstall.htmlを表示
+    $("#main-area").html('<iframe src="install.html" width="100%" height="800" frameborder="0"></iframe>');
+  });
+});
+</script>
 <meta property="og:image" content="./images/logo.png" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 </head>
@@ -64,11 +81,11 @@
 <div id="navigation">
 <ul class="clearfix">
 <li>
-  <a href="/top/usage">
+  <a href="javascript:void(0);">
 	  <img alt="つかいかた" width="324" height="95" class="rollover" src="./images/images-home/btn_howtouse.png" />
 </a></li>
 <li>
-  <a href="/top/install">
+  <a href="javascript:void(0);">
 	  <img alt="インストール方法" width="324" height="95" class="rollover" src="./images/images-home/btn_howtoinstall.png" />
 </a></li>
 <li class="last">
