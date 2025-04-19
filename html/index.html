@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="keywords" content="リブロン,図書館,Amazon,カーリル,検索,蔵書,アドオン,addon,Firefox,Chrome,拡張,グリモン,Greasemonkey,無料,ライフハック,lifehack,iPhone" />
+<meta name="description" content="Libron(リブロン)は、カーリルAPIを使いAmazonのページから最寄りの図書館(全国7000以上の図書館に対応)の蔵書を検索できる便利なツールです。iPhone版、Firefox Greasemonkey版、Chrome Extension版を配布しています。" />
+<title>Libron(リブロン) – 図書館をもっと身近に</title>
+<link href="/stylesheets/import.css" rel="stylesheet" type="text/css" media="screen,print" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/jquery.featureList-1.0.0.js"></script>
+<script type="text/javascript" src="/javascripts/function.js"></script>
+<meta property="og:image" content="https://libron.net/images/logo.png" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+</head>
+<body id="home">
+
+<a class="github-fork-ribbon left-top" href="https://github.com/champierre/libron" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1&appId=223228137711757";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div id="container">
+<!-- ***********************************************
+	Header
+*********************************************** -->
+<div id="header" class="clearfix">
+<div class="logo left">
+	<a href="/">
+		<img alt="Libron(リブロン) – 図書館をもっと身近に" width="172" height="77" src="/images/logo.png" />
+</a></div>
+<div class="adsense-top left">
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-0814494067339755";
+/* Libron トップ */
+google_ad_slot = "4160915992";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+
+<div class="social_buttons clearfix">
+<div style="margin-right:20px;"><a href="https//b.hatena.ne.jp/entry/http://libron.net" class="hatena-bookmark-button" data-hatena-bookmark-title="Libron(リブロン) - 図書館をもっと身近に" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></div>
+<div style="margin-right:15px;"><a href="https://twitter.com/share" class="twitter-share-button" data-url="https://libron.net" data-count="horizontal" data-lang="ja">Tweet</a><script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script></div>
+<div><iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Flibronapp&amp;send=true&amp;layout=button_count&amp;width=200&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px; height:21px;" allowTransparency="true"></iframe></div>
+</div>
+
+<!-- div#header --></div>
+
+
+<!-- ***********************************************
+	Contents
+*********************************************** -->
+<div id="contents" class="clearfix">
+<div id="visual">
+<div class="description">
+<h1>Libron（リブロン）とは</h1>
+<p class="lead">Libron は Amazon のページから素早く最寄りの図書館の蔵書を検索し、貸出予約ができる便利なツールです。</p>
+<p class="area">図書館蔵書検索サイト「カーリル」(<a href="https://calil.jp/" target="_blank">https://calil.jp/</a>)の提供するAPIを利用することで、<strong>全国7000以上の図書館(1400館以上の<a href="http://calil.jp/library/univ" target="_blank">大学図書館</a>を含む)</strong>に対応しています。</p>
+<!-- /div.description --></div>
+
+<ul id="tabs">
+<li><a href="javascript:;">Library + Amazon</a></li>
+<li><a href="javascript:;">1. 図書館を選択</a></li>
+<li><a href="javascript:;">2. 本を検索</a></li>
+<li><a href="javascript:;">3. 図書館のページにジャンプ</a></li>
+</ul>
+<ul id="output">
+    <li><img alt="Library + Amazon" width="650" height="250" src="/images/images-home/visual_0.png" /></li>
+    <li><img alt="1. 図書館を選択" width="650" height="250" src="/images/images-home/visual_1.png" /></li>
+    <li><img alt="2. 本を検索" width="650" height="250" src="/images/images-home/visual_2.png" /></li>
+    <li><img alt="3. 図書館のページにジャンプ" width="650" height="250" src="/images/images-home/visual_3.png" /></li>
+</ul>
+<!-- /div#visual --></div>
+
+<!-- ===============================
+	Navigation
+=============================== -->
+<div id="navigation">
+<ul class="clearfix">
+<li>
+  <a href="/top/usage">
+	  <img alt="つかいかた" width="324" height="95" class="rollover" src="/images/images-home/btn_howtouse.png" />
+</a></li>
+<li>
+  <a href="/top/install">
+	  <img alt="インストール方法" width="324" height="95" class="rollover" src="/images/images-home/btn_howtoinstall.png" />
+</a></li>
+<li class="last">
+<ol class="download">
+<li class="upperline"><a href="https://chrome.google.com/webstore/detail/fpfgglfemmnflnmjminpghmeiajcajoi" target="_blank"><img alt="Chrome Extension版をダウンロード" title="Chrome Extension版をダウンロード" width="118" height="44" class="rollover" src="/images/images-home/btn_dl_chrome.png" /></a></li>
+<li class="upperline even"><a href="/top/install?browser=Firefox" target="_blank"><img alt="Firefox Greasemonkey 版をダウンロード" title="Firefox Greasemonkey 版をダウンロード" width="118" height="44" class="rollover" src="/images/images-home/btn_dl_firefox.png" /></a></li>
+</ol>
+</li>
+</ul>
+<!-- /div#navigation --></div>
+
+<div class="wrapper">
+<!-- ===============================
+	Main Area
+=============================== -->
+<div id="main-area">
+
+<div class="news">
+<h2>サポートのお願い</h2>
+2010年よりLibronはオープンソースかつ無料で提供しております。継続して開発を続けるためには、使っていただいている皆さまからの支援が必要です。<a href="https://www.buymeacoffee.com/champierre" target="_blank">1杯のコーヒー</a>という形でサポートをいただけると大変ありがたく思います。<br />
+
+※ クレジットカードの明細には「<a href="https://tsukurusha.com/" target="_blank">合同会社つくる社</a>」と表示されます。
+</div>
+
+<br />
+
+<div class="news">
+<h2>更新履歴</h2>
+<dl>
+<!--
+<dt>xxxDATExxx</dt>
+<dd>xxxTEXTxxx</dd>
+-->
+<dt>3.0.18 - 2023/01/23</dt>
+<dd>本以外の商品ページでも検索のローディングアイコンが表示されてしまうバグを修正しました。</dd>
+<dt>3.0.17 - 2023/01/12</dt>
+<dd>Kindle や Audible のページでも対応する単行本が図書館にあるかどうかを表示するようにしました。</dd>
+<dt>3.0.16 - 2023/01/06</dt>
+<dd>図書館設定画面を新しくしました。拡張機能バーより Libron のアイコンをクリックして開いて下さい。</dd>
+<dt>3.0.15 - 2023/01/02</dt>
+<dd>Chrome Extension Manifest V3に対応しました。</dd>
+<dt>3.0.13 - 2020/12/06</dt>
+<dd>Chrome 87以降で動作しない問題を修正しました。</dd>
+<dt>3.0.12 - 2019/03/28</dt>
+<dd>LibronをインストールしているとAmazon Payでエラーが発生する問題を修正しました。</dd>
+<dt>2018/10/11</dt>
+<dd>Safari 12より.safariextzスタイルの拡張機能がサポートされなくなりました。これに伴い、LibronでSafariをサポートすることが難しくなったため、サポートをやめることにいたしました。</dd>
+<dt>3.0.10 - 2018/01/10</dt>
+<dd>図書館選択ができなくなっていた問題を修正しました。</dd>
+<dt>3.0.9 - 2016/06/12</dt>
+<dd>Amazonのhttpsページに対応しました。</dd>
+<dt>3.0.8</dt>
+<dd>ほしい物リスト(Wishlist)に対応し直しました。</dd>
+<dt>3.0.7</dt>
+<dd>Amazonの書籍ページのデザイン変更に対応しました。</dd>
+<dt>3.0.5(Greasemonkey版のみ)</dt>
+<dd>Firefox Greasemonkey版をリリースしました。</dd>
+<dt>3.0.4</dt>
+<dd>「大学図書館も表示」のチェックあり/なし が保存されていなかった問題を修正しました。</dd>
+<dt>3.0.3</dt>
+<dd>Chrome Extension版で図書館の選択と蔵書検索ができなくなってしまった問題を修正しました。</dd>
+<dd>Chrome Extension版をManifest version 2に対応</dd>
+<dt>3.0.2</dt>
+<dd>本が図書館にない場合、他の図書館で借りられるかどうかすぐに調べられるようにカーリルのリンクを表示するようにしました。</dd>
+<dt>3.0.1</dt>
+<dd>デフォルトのリスト以外の「ほしい物リスト」（新しく自分で作成した「ほしい物リスト」）にも対応しました。</dd>
+</dl>
+<!-- /div.news --></div>
+
+<!-- /div#main-area --></div>
+
+<!-- ===============================
+	Sub Area
+=============================== -->
+<div id="sub-area">
+
+<div id="facebook_like_box">
+<div class="fb-like-box" data-href="https://www.facebook.com/libronapp" data-height="380" data-width="240" data-show-faces="true" data-stream="false" data-header="false"></div>
+</div>
+
+<ul>
+<li><a href="https://blog.champierre.com/858" target="_blank"><img alt="開発者ブログ" title="開発者のブログ「僕は発展途上技術者」へ" width="110" height="30" class="rollover" src="/images/btn_blog.png" /></a></li>
+<li><a href="https://twitter.com/jishiha" target="_blank"><img alt="@jishiha のタイムラインへ" title="@jishiha のタイムラインへ" width="95" height="30" class="rollover" src="/images/btn_twitter.png" /></a></li>
+</ul>
+<!-- /div#sub-area --></div>
+
+<!-- /div.wrapper --></div>
+<!-- div#contents --></div>
+
+<!-- ***********************************************
+	Footer
+*********************************************** -->
+<div id="footer">
+<span style="font-size:14px;"><a href="/top/contact">お問い合わせ</a> | <a href="/top/pp">プライバシーポリシー</a></span><br>
+<address>© 2010-2025 <a href="https://tsukurusha.com/" target="_blank">Tsukurusha, LLC.</a> All Rights Reserved. Designed by <a target="_blank" href="https://maedaseisaku.com/">前田製作所</a> in Mitaka(<a href="/old">使用前</a>)</address>
+<ul>
+<li>
+<li>図書館API by <a href="https://calil.jp"><img src="/images/calil_banner.gif" /></a></li>
+<li>Icons by <a href="http://www.famfamfam.com" target="_blank">famfamfam.com</a>, <a href="https://www.deviantart.com/brsev" target="_blank">Brsev</a></li>
+<li>Special Thanks to <a href="http://pgcafe.net/" target="_blank">三鷹プログラマーズカフェ</a></li>
+</ul>
+<!-- div#footer --></div>
+
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-105345-20");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>
