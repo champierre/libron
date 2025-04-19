@@ -11,18 +11,46 @@
 
 
 <div class="for-chrome-user" id="chrome">
-<h2><img alt="Google Chrome ユーザーの方へ" width="650" height="80" src="./images/images-subpage/h2_forchromeuser.png" /></h2>
+  <h2><img alt="Google Chrome ユーザーの方へ" width="650" height="80" src="./images/images-subpage/h2_forchromeuser.png" /></h2>
 
-<div class="animation">
-  <img width="500" src="./images/install/install.gif" />
+  <div class="animation">
+    <img width="500" src="./images/install/install.gif" />
+  </div>
+
+  <div class="flow">
+    <h2 class="num1">Libron をインストールします</h2>
+    <p>以下のリンク先より、Libron の Chrome Extension 版をインストールします。<br />
+    <a target="_blank" href="https://chrome.google.com/webstore/detail/fpfgglfemmnflnmjminpghmeiajcajoi">&raquo; Libron - Google Chrome extension gallery</a></p>
+    <p><img alt="Libron Chrome Extension版のインストール" src="./images/install/chrome_extension.png" /></p>
+
+    <h2 class="num2">Libron を拡張機能のバーに固定する</h2>
+    <p>Chrome のメニュー右端の方に表示されている拡張機能のアイコン（パズルのピースの形）をクリックし、Libron の右横のピンのアイコンをクリックして拡張機能のバーに固定して常に Libron のアイコンが表示されるようにしておきます。</p>
+    <p><img alt="拡張機能バーに固定" src="./images/install/extension_bar.png" /></p>
+  </div>
 </div>
 
-<div class="flow">
-<h2 class="num1">Libron をインストールします</h2>
-<p>以下のリンク先より、Libron の Chrome Extension 版をインストールします。<br />
-<a target="_blank" href="https://chrome.google.com/webstore/detail/fpfgglfemmnflnmjminpghmeiajcajoi">&raquo; Libron - Google Chrome extension gallery</a></p>
-<p><img alt="Libron Chrome Extension版のインストール" src="./images/install/chrome_extension.png" /></p>
 
-<h2 class="num2">Libron を拡張機能のバーに固定する</h2>
-<p>Chrome のメニュー右端の方に表示されている拡張機能のアイコン（パズルのピースの形）をクリックし、Libron の右横のピンのアイコンをクリックして拡張機能のバーに固定して常に Libron のアイコンが表示されるようにしておきます。</p>
-<p><img alt="拡張機能バーに固定" src="./images/install/extension_bar.png" /></p>
+<div class="for-firefox-user" id="firefox">
+
+  <h2><img alt="Firefox ユーザーの方へ" width="650" height="80" src="/images/images-subpage/h2_forfirefoxuser.png" /></h2>
+  
+  <div class="flow">
+    <h2 class="num1">Tampermonkeyをインストールします</h2>
+    <p>LibronをFirefoxで利用するには、まずGreasemonkey互換のTampermonkeyというAdd-onをインストールする必要があります。</p>
+    <p>以下のリンク先よりインストールして下さい。</p>
+    <p><a target="_blank" href="https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/">&raquo; Tampermonkey :: Add-ons for Firefox</a></p>
+    
+    <h2 class="num2">Libronをインストールします</h2>
+    <p>次に以下のリンク先より、Libron Greasemonkey版をインストールします。</p>
+    <p><a target="_blank" href="https://github.com/champierre/libron/raw/master/greasemonkey/libron.user.js">&raquo; Libron for Greasemonkey</a></p>
+    <p>上記リンクをクリックすると、Tampermonkeyの画面が表示され、インストールの確認を求められます。「インストール」をクリックしてLibronをインストールします。</p>
+    <p><img alt="Libron Greasemonkey版のインストール" src="/images/tampermonkey.png" /></p>
+    
+    <h2 class="num3">クロスドメインアクセスの許可</h2>
+    <p>Libronをインストールできたら、Amazonのページ(https://www.amazon.co.jp/)にアクセスします。</p>
+    <p>Libronの最新情報と蔵書検索の結果を取得するためLibronはlibron.netとapi.calil.jpにアクセスする必要があります。2つのサーバーに対するクロスドメインアクセスの許可を求める画面が表示されるので、両方とも「Always allow domain」のボタンをクリックして許可してください。</p>
+    <p>以上でLibronをFirefoxで使う準備は完了です。</p>
+    <p><img alt="Libron Greasemonkey版のインストール" src="/images/tampermonkey2.png" /></p>
+    <p><img alt="Libron Greasemonkey版のインストール" src="/images/tampermonkey3.png" /></p>
+  </div>
+</div>
