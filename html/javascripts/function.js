@@ -66,5 +66,5 @@ $(document).ready(function() {
 	smoothScroll();
 	initRollOverImages();
 	slideVisual();
-	
+
 });
