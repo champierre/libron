@@ -45,7 +45,19 @@ function slideVisual(){
 	);
 }
 
-
+// ページコンテンツを読み込む関数
+function loadPage(pageName) {
+	// fetch APIを使ってページの内容を取得
+	fetch(pageName)
+		.then(response => response.text())
+		.then(html => {
+			// 取得したHTMLをmain-areaに直接挿入
+			$("#main-area").html(html);
+		})
+		.catch(error => {
+			console.error('コンテンツの読み込み中にエラーが発生しました:', error);
+		});
+}
 
 //////////////////////////////////////////////////////
 

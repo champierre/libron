@@ -13,39 +13,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="./javascripts/jquery.featureList-1.0.0.js"></script>
 <script type="text/javascript" src="./javascripts/function.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-  // つかいかたの画像がクリックされたとき
-  $("img[alt='つかいかた']").click(function(e) {
-    e.preventDefault();
-    // fetch APIを使ってusage.htmlの内容を取得
-    fetch('usage.html')
-      .then(response => response.text())
-      .then(html => {
-        // 取得したHTMLをmain-areaに直接挿入
-        $("#main-area").html(html);
-      })
-      .catch(error => {
-        console.error('コンテンツの読み込み中にエラーが発生しました:', error);
-      });
-  });
 
-  // インストール方法の画像がクリックされたとき
-  $("img[alt='インストール方法']").click(function(e) {
-    e.preventDefault();
-    // fetch APIを使ってinstall.htmlの内容を取得
-    fetch('install.html')
-      .then(response => response.text())
-      .then(html => {
-        // 取得したHTMLをmain-areaに直接挿入
-        $("#main-area").html(html);
-      })
-      .catch(error => {
-        console.error('コンテンツの読み込み中にエラーが発生しました:', error);
-      });
-  });
-});
-</script>
 <meta property="og:image" content="./images/logo.png" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 </head>
@@ -97,11 +65,11 @@ $(document).ready(function() {
 <div id="navigation">
 <ul class="clearfix">
 <li>
-  <a href="javascript:void(0);">
+  <a href="javascript:loadPage('usage.html');">
 	  <img alt="つかいかた" width="324" height="95" class="rollover" src="./images/images-home/btn_howtouse.png" />
 </a></li>
 <li>
-  <a href="javascript:void(0);">
+  <a href="javascript:loadPage('install.html');">
 	  <img alt="インストール方法" width="324" height="95" class="rollover" src="./images/images-home/btn_howtoinstall.png" />
 </a></li>
 <li class="last">
