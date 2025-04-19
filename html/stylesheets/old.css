@@ -1,0 +1,51 @@
+body {
+  font-family: "Hiragino Maru Gothic Pro" ,"HG丸ゴシックM-PRO" ,verdana ,arial ,sans-serif;
+}
+
+.right {
+  text-align: right;
+}
+
+.smallbox {
+  padding:0.5em;margin-bottom:1.5em;background:#E5ECF9;
+}
+
+.border-bottom {
+  padding-bottom: 3px;
+  border-bottom: 5px solid #FAB13E;
+}
+
+.header {
+  padding-top: 10px;
+}
+
+.spacer {
+  margin-top: 40px;
+}
+
+.mini_spacer {
+  margin-top: 20px;
+}
+
+.footer {
+  border-top: 1px solid #ccc;
+  padding-top: 3px;
+}
+
+.title {
+  font-size: 14px;
+}
+
+.section {
+  margin: 30px 0;
+}
+
+.less_margin_bottom {
+  margin-bottom: 7px;
+}
+
+.twtr-widget h4 {
+  color: #ffffff;
+  font-weight: bold;
+}
+

@@ -1,0 +1,349 @@
+@charset "utf-8";
+
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.7.0
+*/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}input,button,textarea,select{*font-size:100%;}body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea,button{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+
+
+
+
+/* =============================================
+	
+	Base
+	
+============================================= */
+
+html {
+	color: #3e2f12;
+	font-family: Meiryo,'メイリオ','Lucida Grande',Verdana,'Hiragino Kaku Gothic Pro','ヒラギノ角ゴ Pro W3','ＭＳ Ｐゴシック',sans-serif;
+	background: #efece6 url(../images/bg.png);
+}
+
+body { line-height: 1.5; }
+
+#container {
+	width: 904px;
+	margin: 0 auto;
+}
+
+.clearfix:after {
+	height: 0;
+	visibility: hidden;
+	content: ".";
+	display: block;
+	clear: both;
+}
+.clearfix { display: inline-block; }
+
+
+/* link setting */
+a:link    { color: #1d507f; text-decoration: underline; }
+a:visited { color: #3d74a7; text-decoration: underline; }
+a:hover   { color: #1d507f; text-decoration: none; }
+a:active  { text-decoration: none; }
+
+
+/* Inline Elements */
+img          { vertical-align: bottom; }
+strong       { font-weight: bold; }
+em           { color: #cc0000; font-style: normal; }
+abbr,acronym { border-bottom: 1px dashed #666; cursor: help;}
+label        { cursor: help;}
+
+
+/* Block Elements */
+.section { margin-bottom: 50px; position: relative; }
+h1,h2,h3,h4,h5 { clear: both; }
+
+
+
+
+
+
+
+
+/* =============================================
+	
+	Modules
+	
+============================================= */
+
+
+/* ----------------------------------------
+	
+	Header
+	
+---------------------------------------- */
+#header {
+	width: 902px;
+	margin: 20px 2px 0;
+	position: relative;
+}
+
+#header .logo {
+	position: relative;
+	left: -2px;
+}
+
+#header #amazon-widget {
+	position: absolute;
+	top: 10px;
+	right: 0;
+}
+
+#header #navigation {
+	/*margin: 87px 0 0;*/
+	margin: 37px 0 0;
+  padding-top: 1px;
+	background: url(../images/nav_bg.png) no-repeat;
+	height: 42px;
+    clear: left;
+}
+
+#header #navigation li {
+	float: left;
+}
+
+
+
+/* ----------------------------------------
+	
+	Contents
+	
+---------------------------------------- */
+#contents {
+  width: 100%;
+	margin-top: 20px;
+	position: relative;
+}
+
+
+
+/* Main Area 
+--------------------------------------------- */
+#main-area { font-size: 108%; }
+#main-area h1 { margin-bottom: 20px; }
+
+
+div.banners {
+    clear: both;
+    padding: 20px 0;
+}
+
+div.banners p {
+	box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    margin-bottom: 10px;
+}
+
+
+/* Download Area
+--------------------------------------------- */
+.download-area {
+  margin-top:1px;
+  margin-bottom: 20px;
+	padding: 10px;
+	border: 1px solid #cbc6bd;
+	background: #e8e4db;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	width: 220px;
+	height: 70px;
+}
+
+/* Sub Area 
+--------------------------------------------- */
+#sub-area {
+	position: absolute;
+	top: 0;
+	width: 240px;
+	left: 662px;
+}
+
+#sub-area .section {
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 1px solid #cbc6bd;
+	background: #e8e4db;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#sub-area .section h2 {
+	margin: 0 0 5px 2px;
+}
+
+#sub-area .section p {
+	padding: 0 5px;
+	margin-bottom: 0.8em;
+	line-height: 1.4 !important;
+}
+
+#sub-area .section p.btn {
+	text-align: center;
+}
+
+
+/* --- link and bookmark --- */
+#sub-area ul {
+	margin: 0 10px;
+}
+
+#sub-area ul li {
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 10px;
+}
+
+#sub-area ul li.addclip { margin-right: 10px; }
+
+
+/* --- download button --- */
+#download {
+	margin: 0 0 20px -2px !important;
+	_margin: 0 0 20px 0px !important;
+	height:93px;
+}
+
+#download li {
+	margin:0 1px 0 0 !important;
+	_margin:0 0px 0 0 !important;
+}
+
+#download .last {
+	margin: 0 !important;
+}
+
+/* library page */
+div#library-page div.left{
+  width:20%;
+  float:left;
+}
+
+div#library-page div.right{
+  margin-top:2px;
+  width:80%;
+  float:left;
+}
+
+div#library-page h2 {
+  font-weight:bold;
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+div#library-page p {
+  margin: 0 3px 10px 0;
+}
+
+div.iphone-banner {
+  margin-top: 30px;
+}
+
+div#library-page div.nav {
+  margin-bottom: 10px;
+  display: table;
+}
+
+div.nav img {
+  vertical-align: -4px;
+}
+
+div.nav div {
+  float:left;
+  margin-right: 12px;
+}
+
+/* ----------------------------------------
+	
+	Footer
+	
+---------------------------------------- */
+#footer {
+	clear: both;
+	margin: 70px 2px 50px;
+	padding: 10px 0 0;
+	font-size: 77%;
+	position: relative;
+	border-top: 1px solid #cbc6bd;
+	line-height: 1.7;
+}
+
+#footer address {
+	float: left;
+	font-style: normal;
+}
+
+#footer ul {
+	text-align: right;
+}
+
+*+html #footer ul { font-size: 85%; }
+* html #footer ul { font-size: 85%; }
+
+#footer a:link    { text-decoration: none; }
+#footer a:visited { text-decoration: none; }
+#footer a:hover   { text-decoration: underline; }
+#footer a:active  { text-decoration: underline; }
+
+
+
+/* =============================================
+	
+	extra
+	
+============================================= */
+
+/* 上余白 */
+.mt0 { margin-top:0 !important; }
+.mt10{ margin-top:10px !important; }
+.mt20{ margin-top:20px !important; }
+.mt30{ margin-top:30px !important; }
+.mt40{ margin-top:40px !important; }
+.mt50{ margin-top:50px !important; }
+.mt60{ margin-top:60px !important; }
+.mt70{ margin-top:70px !important; }
+.mt80{ margin-top:80px !important; }
+.mt90{ margin-top:90px !important; }
+.mt100{ margin-top:100px !important; }
+
+/* 下余白 */
+.mb0 { margin-bottom:0 !important; }
+.mb10{ margin-bottom:10px !important; }
+.mb20{ margin-bottom:20px !important; }
+.mb30{ margin-bottom:30px !important; }
+
+
+/* 左余白 */
+.ml0 { margin-left:0 !important; }
+.ml10{ margin-left:10px !important; }
+.ml20{ margin-left:20px !important; }
+.ml30{ margin-left:30px !important; }
+
+/* 右余白 */
+.mr0 { margin-right:0 !important;}
+.mr10{ margin-right:10px !important; }
+.mr20{ margin-right:20px !important; }
+.mr30{ margin-right:30px !important; }
+
+
+/* ボックス幅 */
+.w177{ width: 177px !important; }
+
+.w100{ width: 200px !important; }
+.w150{ width: 200px !important; }
+.w200{ width: 200px !important; }
+.w250{ width: 250px !important; }
+.w300{ width: 300px !important; }
+.w350{ width: 350px !important; }
+.w400{ width: 400px !important; }
+.w450{ width: 450px !important; }
+
+
+/* フォントサイズ */
+.font-xs { font-size: 77%; }
+.font-s  { font-size: 85%; }
+.font-m  { font-size: 100%; }

@@ -1,0 +1,261 @@
+/*
+
+	home.css
+
+*/
+
+
+#home #contents {
+	margin-top: 10px;
+}
+
+.left {
+  float:left;
+}
+
+/* ----------------------
+	visual
+---------------------- */
+#visual {
+	position: relative;
+	background: url(/images/images-home/visual_bg.png) top left no-repeat;
+	width: 920px;
+	height: 270px;
+	left: -8px;
+}
+
+#visual ul {
+	position: absolute;
+	top: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* description */
+#visual .description {
+	width: 218px;
+	position: absolute;
+	top: 30px;
+	left: 675px;
+}
+
+#visual .description h1 {
+	font-weight: bold;
+	font-size: 123.1%;
+	color: #333;
+}
+
+#visual .description p.lead {
+	color: #333;
+	font-size: 93%;
+	margin: 5px 0;
+}
+
+#visual .description p.area {
+	color: #777777;
+	font-size: 85%;
+	line-height: 1.5;
+}
+*+html #visual .description p.area { font-size: 70%; line-height: 1.7; }
+* html #visual .description p.area { font-size: 70%; line-height: 1.7; }
+
+#visual .description p.area strong {
+	color: #333;
+	font-size: 116%;
+}
+
+/* --- select button --- */
+ul#tabs {
+	z-index: 2;
+	top: 248px !important;
+	left: 26px;
+}
+
+ul#tabs li {
+	float: left;
+	margin-right: 5px;
+	font-size: 0px;
+}
+
+ul#tabs li a {
+	text-indent: -9999px;
+	text-decoration: none;
+	outline: none;
+	width: 20px;
+	height: 5px;
+	display: block;
+	background: #ccc;
+}
+
+ul#tabs li a:hover {
+	background: #ffa200;
+}
+
+ul#tabs li a.current {
+	background: #ffa200;
+}
+
+
+/* --- output --- */
+ul#output {
+	top: 10px;
+	left: 10px;
+	width: 650px;
+	height: 250px;
+	overflow: hidden;
+	position: relative;
+}
+
+
+
+/* ----------------------
+	navigation
+---------------------- */
+#home #navigation li {
+	float: left;
+	margin-right: 6px;
+	margin-top: 8px;
+	position: relative;
+}
+
+#home #navigation li.last { margin-right: 0; }
+
+#home #navigation span {
+	position: absolute;
+	bottom: 7px;
+	right:  58px;
+	font-family: helvetica,arial,sans-serif;
+	font-size: 9px;
+	color: #765f34;
+}
+* html #home #navigation span { bottom: 6px; }
+
+#home #navigation li:hover span { color: #553802; }
+
+
+/* Download Buttons */
+#home #navigation .download {
+	width: 240px;
+	margin: 2px 0 0 1px;
+}
+
+#home #navigation .download li {
+	float:left;
+	margin: 0;
+}
+
+#home #navigation .download li.even {
+	margin-left: 4px;
+}
+
+#home #navigation .download li.upperline {
+	margin-bottom: 3px;
+}
+
+
+/* ----------------------
+	main-area
+---------------------- */
+#home .wrapper { position: relative; margin-top: 18px; }
+
+#main-area {
+	margin: 0 0 0 2px;
+	width: 650px;
+}
+
+
+#home .news {
+	padding: 10px;
+	border: 1px solid #cbc6bd;
+	background: #e8e4db;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+#home .news h2 { 
+	font-weight: bold;
+	font-size: 108%;
+	color: #3e2f12;
+	border-bottom: 1px solid #cbc6bd;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+}
+*+html #home .news h2 { font-size: 100%; }
+* html #home .news h2 { font-size: 100%; }
+
+#home .news dl { font-size: 93%; }
+#home .news dt { font-weight: bold; }
+#home .news dd { margin-bottom: 0.5em; }
+
+.bold {
+  font-weight: bold;
+}
+
+
+/* ===========================
+	widgets
+=========================== */
+#twitter-widget,
+#review-poster {
+	margin-top: 19px;
+	width: 320px;
+	margin-right: 10px;
+	float: left;
+}
+
+#review-poster {
+	margin-right: 0;
+}
+
+/* --- twitter-widget --- */
+.twtr-tweet-wrap .twtr-tweet-text p { line-height: 1.4 !important; }
+#twitter-widget h4 { font-weight: bold; }
+
+
+/* --- review-poster --- */
+#review-poster { font-size: 93%; }
+
+#reviewposter_title {
+	background: url(/images/images-home/reviewposter_header.png) no-repeat;
+	padding: 5px;
+	color: #fff;
+	text-align:center;
+}
+
+#reviewposter_itembox {
+	border-left: 1px #ccc solid;
+	border-right:1px #ccc solid;
+	text-align:left;
+	padding:2px 4px;
+	background: #fff;
+}
+
+#reviewposter_itemlist {
+	margin: 0 0 2px 16px;
+	padding: 0;
+}
+
+#reviewposter_itemlist li {
+	list-style: disc;
+	margin-top: 5px;
+}
+
+#facebook_like_box {
+  margin-bottom: 7px;
+}
+
+/* social buttons */
+div.social_buttons {
+  padding-top:10px;
+/*  padding-top:54px;*/
+}
+
+div.social_buttons div {
+  float:left;
+}
+
+.animation {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}

@@ -1,0 +1,93 @@
+/*
+
+	subpage.css
+
+*/
+
+.flow h2 {
+	margin: 2em 0 13px;
+	padding-left: 42px;
+	line-height: 39px;
+	color: #3e2f12;
+	font-weight: bold;
+}
+
+.flow h2.num1 { background: url(/images/images-subpage/h2bg_1.png) no-repeat; }
+.flow h2.num2 { background: url(/images/images-subpage/h2bg_2.png) no-repeat; }
+.flow h2.num3 { background: url(/images/images-subpage/h2bg_3.png) no-repeat; }
+.flow h2.num4 { background: url(/images/images-subpage/h2bg_4.png) no-repeat; }
+.flow h2.num5 { background: url(/images/images-subpage/h2bg_5.png) no-repeat; }
+.flow h2.num6 { background: url(/images/images-subpage/h2bg_6.png) no-repeat; }
+.flow h2.num7 { background: url(/images/images-subpage/h2bg_7.png) no-repeat; }
+.flow h2.num8 { background: url(/images/images-subpage/h2bg_8.png) no-repeat; }
+.flow h2.num9 { background: url(/images/images-subpage/h2bg_9.png) no-repeat; }
+
+.flow p { margin: 0 6px 0; width: 610px; }
+
+
+
+.message-for-chromeuser {
+	color: #6b6964;
+	font-size: 93%;
+	width: 500px !important;
+}
+
+
+.float1-2 {}
+.float1-2 .left {
+	width: auto;
+	float: left;
+}
+
+.float1-2 .right {
+	width: auto;
+	margin-left: 110px;
+}
+
+
+#main-area p {
+	margin-bottom: 1em;
+}
+
+#main-area .aside {
+	margin: 1em 10px 2em;
+	padding: 20px;
+	background: #e8e4db;
+	border: 1px solid #cbc6bd;
+}
+
+#main-area .aside p:last-of-type { margin-bottom: 0; }
+
+.for-firefox-user,
+.for-chrome-user,
+.for-safari-user,
+.for-iphone-user
+{
+	margin-top: 20px;
+	padding-top: 30px;
+	background: url(/images/divider.png) top left no-repeat;
+}
+
+#subpage .news {
+	padding: 10px;
+	border: 1px solid #cbc6bd;
+	background: #e8e4db;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin-bottom:20px;
+}
+
+#subpage .news h2 { 
+	font-weight: bold;
+	font-size: 108%;
+	color: #3e2f12;
+	border-bottom: 1px solid #cbc6bd;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+}
+*+html #subpage .news h2 { font-size: 100%; }
+* html #subpage .news h2 { font-size: 100%; }
+
+#subpage .news dl { font-size: 93%; }
+#subpage .news dt { font-weight: bold; }
+#subpage .news dd { margin-bottom: 0.5em; }
