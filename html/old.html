@@ -1,0 +1,161 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"https://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="robots" content="index,follow" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]><link rel="stylesheet" href="/stylesheets/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+<link rel="stylesheet" href="/stylesheets/old.css" type="text/css">
+<title>Libron(リブロン) – 図書館をもっと身近に</title>
+<meta name="keywords" content="図書館,Amazon,検索,蔵書,Greasemonkey,Firefox">
+<meta name="description" content="Libron は Amazon のページから最寄りの図書館の蔵書を検索できる便利なツールです">
+<script type="text/javascript" charset="UTF-8">
+//<![CDATA[
+
+//]]>
+</script>
+</head>
+<body>
+<div class="container">
+<div class="span-24 last header large">
+<h1>Libron - 無料で本が読めるライフハック</h1>
+</div>
+
+<div class="span-24 last menu">
+<div class="smallbox span-3"><a href="/old">Libron とは？</a></div>
+<div class="smallbox span-3"><a href="/old/install">インストール</a></div>
+<div class="smallbox span-6"><a href="/old/install_for_safari">Safari ユーザーのための GreaseKit 版</a></div>
+<div class="smallbox span-3"><a href="http://blog.champierre.com/858">開発者ブログ</a></div>
+<div class="span-6 last">
+<a href="http://b.hatena.ne.jp/entry/libron.net/"><img src="http://b.hatena.ne.jp/entry/image/http://libron.net"></a>
+</div>
+</div>
+
+<div class="span-18 main">
+
+<h2>Libron とは？</h2>
+
+<div class="notice">
+<p><b>2010/01/26</b> ver.1.96 滋賀県内県の図書館に対応しました。Firefox 3.6 に対応しました。</p>  
+<p><b>2010/01/15</b> ver.1.94 宮崎県の図書館(一部を除く。<a target="_blank" href="http://github.com/ishimaru-s/libron/blob/master/libron.miyazaki.js">詳細</a>)に対応しました。</p>  
+<p><b>2009/12/08</b> ver.1.93 大阪府Web-OPAC横断検索のURL変更に対応しました。</p>  
+</div>
+
+<p>Libron は <span class="large" style="color:#005499;font-weight:bold;">Amazon</span> のページから最寄りの図書館(*)の蔵書を検索できる便利なツールです。</p>
+
+<div class="small">* 現在対応しているのは東京都、大阪府、京都府、神奈川県、千葉県、兵庫県、岐阜県、三重県、埼玉県内一部（川越市立図書館、川口市立図書館、越谷市立図書館、埼玉県立図書館、所沢市立所沢図書館、朝霞市立図書館、新座市立図書館、志木市立図書館、和光市立図書館）、新潟県（新潟市立図書館のみ）、宮崎県(一部を除く。<a target="_blank" href="http://github.com/ishimaru-s/libron/blob/master/libron.miyazaki.js">詳細</a>)、滋賀県の図書館です。</div>
+
+<div class="section">
+<h3 class="border-bottom">1. 図書館を選択</h3>
+<img src="/images/old/libron1.png" />
+</div>
+
+<div class="section">
+<h3 class="border-bottom">2. 本を検索</h3>
+<img src="/images/old/libron2.png" />
+</div>
+
+<div class="section">
+<h3 class="border-bottom">3. 図書館のページにジャンプ</h3>
+<img src="/images/old/libron3.png" />
+</div>
+
+</div>
+<div class="span-6 last right-sidebar">
+<div class="box">
+<div class="title"><img src="/images/old/sendpoint.gif" />寄付</div>
+<div class="small less_margin_bottom">Libronは無償で提供していますが、相応の開発時間とサーバー代というコストがかかっています。節約できた本代をはてなポイントでご寄付いただけると助かります。</div>
+<a target="_blank" href="https://www.hatena.ne.jp/sendpoint?name=jishiha">はてなポイントでjishihaに投げ銭！</a>
+<div class="mini_spacer"></div>
+<div class="title"><img src="/images/old/film.png" />動画</div>
+<a target="_blank" href="http://screencast.com/t/YRSNWbq3">2分で分かるLibron</a>
+<div class="mini_spacer"></div>
+<div class="title"><img src="/images/old/cog.png" />ダウンロード</div>
+<a target="_blank" href="https://github.com/champierre/libron/raw/master/libron.user.js">libron.user.js</a>
+
+<div class="small">* Firefox + Greasemonkey が必要です</div>
+
+</div>
+
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: 'libron',
+  interval: 6000,
+  title: '',
+  subject: 'Twitter での評判',
+  width: 230,
+  height: 300,
+  theme: {
+    shell: {
+      background: '#8ec1da',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#1985b5'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: true,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: true,
+    behavior: 'default'
+  }
+}).render().start();
+</script>
+
+<div class="mini_spacer"></div>
+
+<!-- レビュー・ポスター -->
+<table cellpadding="0" cellspacing="0" border="0" id="reviewposter_table" style="width:230px;">
+<tr><th id="reviewposter_title" style="	background:url(./images/old/titlebg230.gif) no-repeat;color: #FFF;text-align:center;height: 28px;">Libronユーザーの声<div style="font-weight:normal;font-size:10px">レビュー記事にリンクさせていただきます。 libron at champierre dot com までご連絡を。</div></th></tr>
+<tr><td id="reviewposter_itembox" style="border-left: 1px #CCC solid;border-right:1px #CCC solid;text-align:left;padding:2px 4px;">
+<ul id="reviewposter_itemlist" style="list-style:disc;margin:0 0 2px 16px;padding:0;">
+</ul>
+</td></tr>
+<tr><td style="border-left: 1px #CCC solid;border-right:1px #CCC solid;border-bottom:1px #CCC solid;padding:0 2px 0 0;text-align: right;">
+	<a href="#" onclick="javascript:reviewposter_showitems(this);return false;" id="reviewposter_expand"><img src="http://reviewposter.com/img/openicon.gif" width="16" height="16" border="0" align="absmiddle" hspace="2" alt="▼">すべて表示</a>
+	<a href="#" onclick="javascript:reviewposter_hideitems(this);return false;" id="reviewposter_collapse" style="display:none"><img src="http://reviewposter.com/img/closeicon.gif" width="16" height="16" border="0" align="absmiddle" hspace="2" alt="▲">閉じる</a>
+</td></tr>
+<tr><td style="text-align:right;font-size:9px;">generated by <a href="http://reviewposter.com/" target="_blank">レビュー・ポスター</a></td></tr>
+</table>
+<script type="text/javascript" charset="utf-8" src="http://reviewposter.com/reviewposter.js"></script>
+<script type="text/javascript" charset="utf-8" src="http://reviewposter.com/reviewsjs.php?u=http%3A%2F%2Fb.hatena.ne.jp%2Fjishiha%2Frss%3Ftag%3DLibron%25E3%2583%25AC%25E3%2583%2593%25E3%2583%25A5%25E3%2583%25BC&s=3&d=1&z=240&l=20&t=Libron%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%81%AE%E5%A3%B0"></script>
+<!-- レビュー・ポスター -->
+
+</div>
+
+<div class="span-24 last footer small quiet right">
+  <a href="http://trackfeed.com/"><img name="trackfeed_banner" src="http://img.trackfeed.com/img/tfg.gif" alt="track link" border="0" align="absmiddle" /></a>
+  <nobr><a href="http://trackfeed.com/u/9eafce9a074f056a245fcbfe0c0cc0533ffb02d8/Libron+-+%E7%84%A1%E6%96%99%E3%81%A7%E6%9C%AC%E3%81%8C%E8%AA%AD%E3%82%81%E3%82%8B%E3%83%A9%E3%82%A4%E3%83%95%E3%83%8F%E3%83%83%E3%82%AF/http%3A%2F%2Flibron.net/52639eda">Libron - 無料で本が読めるライフハック</a></nobr>
+  <script type="text/javascript">
+  document.write(unescape("%3Cscript src='http://script.trackfeed.com/usr/9/3/7d6ce478.js' type='text/javascript'%3E%3C/script%3E"));
+  </script><br />
+Icons by <a target="_blank" href="http://www.famfamfam.com">famfamfam.com</a><br />
+Special Thanks to <a href="http://pgcafe.net">三鷹プログラマーズカフェ</a><br />
+Copyright(C)2009-2025 <a target="_blank" href="http://champierre.com/">Champierre</a> All Rights Reserved.
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-105345-20");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>
